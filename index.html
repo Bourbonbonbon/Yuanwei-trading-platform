@@ -494,6 +494,49 @@
             font-size: 16px;
             margin-bottom: 15px;
         }
+        
+        /* 表格响应式 */
+        .table-responsive {
+            width: 100%;
+            overflow-x: auto;
+            margin-top: 15px;
+        }
+        
+        /* 操作按钮组适配表格 */
+        .data-table .action-buttons {
+            display: flex;
+            gap: 5px;
+            flex-wrap: nowrap;
+        }
+        
+        .data-table .action-buttons .btn {
+            padding: 6px 10px;
+            font-size: 12px;
+            white-space: nowrap;
+        }
+        
+        /* 响应式表格调整 */
+        @media (max-width: 768px) {
+            .data-table {
+                font-size: 14px;
+            }
+            
+            .data-table th, .data-table td {
+                padding: 8px 10px;
+            }
+            
+            .data-table .action-buttons {
+                flex-direction: column;
+            }
+            
+            .search-box {
+                flex-direction: column;
+            }
+            
+            .search-box input, .search-box button {
+                width: 100%;
+            }
+        }
     </style>
 </head>
 <body>
@@ -555,13 +598,16 @@
             </div>
             
             <div id="accountQueryContent" style="display: none;">
-                <div class="search-box">
-                    <input type="text" id="accountSearch" placeholder="搜索昵称、名称、手机尾号等">
-                    <button id="searchAccountBtn" class="btn">搜索</button>
-                    <button id="resetAccountSearchBtn" class="btn btn-secondary">重置</button>
-                </div>
                 <div class="data-section">
                     <h3 class="section-title">所有账号信息</h3>
+                    
+                    <!-- 搜索功能 -->
+                    <div class="search-box">
+                        <input type="text" id="accountSearch" placeholder="搜索昵称、名称、手机尾号或特殊喜好">
+                        <button id="searchAccountBtn" class="btn">搜索</button>
+                        <button id="resetAccountSearchBtn" class="btn btn-secondary">重置</button>
+                    </div>
+                    
                     <div id="accountQueryDataContainer">
                         <!-- 账号信息将通过JavaScript动态生成 -->
                     </div>
@@ -783,12 +829,12 @@
                 </div>
                 
                 <div class="form-group">
-                    <label for="dickLength">屌长（厘米）：</label>
+                    <label for="dickLength">肉棒长（厘米）：</label>
                     <input type="number" id="dickLength" min="0" max="30" step="0.1">
                 </div>
                 
                 <div class="form-group">
-                    <label for="dickThickness">屌粗（厘米）：</label>
+                    <label for="dickThickness">肉棒粗（厘米）：</label>
                     <input type="number" id="dickThickness" min="0" max="10" step="0.1">
                 </div>
                 
@@ -798,91 +844,6 @@
                 </div>
                 
                 <button type="submit" class="btn" style="width: 100%;">提交申请</button>
-            </form>
-        </div>
-    </div>
-    
-    <!-- 编辑账号信息模态框 -->
-    <div class="modal" id="editAccountModal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3 class="modal-title">编辑账号信息</h3>
-                <button class="close-btn" id="closeEditAccountModal">&times;</button>
-            </div>
-            <form id="editAccountForm">
-                <input type="hidden" id="editAccountId">
-                
-                <div class="form-group">
-                    <label for="editNickname">昵称：</label>
-                    <input type="text" id="editNickname" required>
-                </div>
-                
-                <div class="form-group">
-                    <label for="editUsername">名称：</label>
-                    <input type="text" id="editUsername" required>
-                </div>
-                
-                <div class="form-group">
-                    <label for="editPhoneTail">手机尾号：</label>
-                    <input type="text" id="editPhoneTail" maxlength="4" required>
-                </div>
-                
-                <div class="form-group">
-                    <label for="editAge">年龄：</label>
-                    <input type="number" id="editAge" min="1" max="100" required>
-                </div>
-                
-                <div class="form-group">
-                    <label for="editHeight">身高（厘米）：</label>
-                    <input type="number" id="editHeight" min="100" max="250" required>
-                </div>
-                
-                <div class="form-group">
-                    <label for="editWeight">体重（公斤）：</label>
-                    <input type="number" id="editWeight" min="30" max="200" step="0.1" required>
-                </div>
-                
-                <div class="form-group">
-                    <label>属性：</label>
-                    <div class="radio-group">
-                        <div class="radio-item">
-                            <input type="radio" id="editAttribute1" name="editAttribute" value="1" required>
-                            <label for="editAttribute1">1</label>
-                        </div>
-                        <div class="radio-item">
-                            <input type="radio" id="editAttribute0" name="editAttribute" value="0">
-                            <label for="editAttribute0">0</label>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="form-group">
-                    <label for="editSmAttribute">SM属性：</label>
-                    <select id="editSmAttribute" required>
-                        <option value="">请选择</option>
-                        <option value="S">S</option>
-                        <option value="M">M</option>
-                        <option value="Sub">Sub</option>
-                        <option value="Dom">Dom</option>
-                    </select>
-                </div>
-                
-                <div class="form-group">
-                    <label for="editDickLength">屌长（厘米）：</label>
-                    <input type="number" id="editDickLength" min="0" max="30" step="0.1">
-                </div>
-                
-                <div class="form-group">
-                    <label for="editDickThickness">屌粗（厘米）：</label>
-                    <input type="number" id="editDickThickness" min="0" max="10" step="0.1">
-                </div>
-                
-                <div class="form-group">
-                    <label for="editSpecialPreferences">特殊喜好：</label>
-                    <textarea id="editSpecialPreferences" rows="3" placeholder="原味/圣水/捆绑等"></textarea>
-                </div>
-                
-                <button type="submit" class="btn" style="width: 100%;">保存修改</button>
             </form>
         </div>
     </div>
@@ -1141,6 +1102,91 @@
         </div>
     </div>
     
+    <!-- 修改账号信息模态框 -->
+    <div class="modal" id="editAccountModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">修改账号信息</h3>
+                <button class="close-btn" id="closeEditAccountModal">&times;</button>
+            </div>
+            <form id="editAccountForm">
+                <input type="hidden" id="editAccountId">
+                
+                <div class="form-group">
+                    <label for="editNickname">昵称：</label>
+                    <input type="text" id="editNickname" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="editUsername">名称：</label>
+                    <input type="text" id="editUsername" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="editPhoneTail">手机尾号：</label>
+                    <input type="text" id="editPhoneTail" maxlength="4" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="editAge">年龄：</label>
+                    <input type="number" id="editAge" min="1" max="100" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="editHeight">身高（厘米）：</label>
+                    <input type="number" id="editHeight" min="100" max="250" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="editWeight">体重（公斤）：</label>
+                    <input type="number" id="editWeight" min="30" max="200" step="0.1" required>
+                </div>
+                
+                <div class="form-group">
+                    <label>属性：</label>
+                    <div class="radio-group">
+                        <div class="radio-item">
+                            <input type="radio" id="editAttribute1" name="editAttribute" value="1" required>
+                            <label for="editAttribute1">1</label>
+                        </div>
+                        <div class="radio-item">
+                            <input type="radio" id="editAttribute0" name="editAttribute" value="0">
+                            <label for="editAttribute0">0</label>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="editSmAttribute">SM属性：</label>
+                    <select id="editSmAttribute" required>
+                        <option value="">请选择</option>
+                        <option value="S">S</option>
+                        <option value="M">M</option>
+                        <option value="Sub">Sub</option>
+                        <option value="Dom">Dom</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="editDickLength">肉棒长（厘米）：</label>
+                    <input type="number" id="editDickLength" min="0" max="30" step="0.1">
+                </div>
+                
+                <div class="form-group">
+                    <label for="editDickThickness">肉棒粗（厘米）：</label>
+                    <input type="number" id="editDickThickness" min="0" max="10" step="0.1">
+                </div>
+                
+                <div class="form-group">
+                    <label for="editSpecialPreferences">特殊喜好：</label>
+                    <textarea id="editSpecialPreferences" rows="3" placeholder="原味/圣水/捆绑等"></textarea>
+                </div>
+                
+                <button type="submit" class="btn" style="width: 100%;">保存修改</button>
+            </form>
+        </div>
+    </div>
+    
     <!-- 密码提示消息 -->
     <div id="passwordSuccessMessage" class="password-message success-message" style="display: none; position: fixed; top: 20px; right: 20px; z-index: 1000;">
         密码正确，正在加载内容...
@@ -1152,6 +1198,7 @@
         const DEFAULT_ADMIN_PASSWORD = "740302";
         let currentPostCounter = 0;
         let currentReplyCounter = 0;
+        let accountSearchTerm = '';
         
         // 从localStorage加载数据
         let accountData = JSON.parse(localStorage.getItem('accountData')) || [];
@@ -1183,6 +1230,9 @@
             
             // 初始化账号信息页面
             setupAccountInfoPage();
+            
+            // 初始化账号信息查询页面
+            setupAccountQueryPage();
             
             // 初始化帖子发布页面
             setupPostPublishPage();
@@ -1343,8 +1393,8 @@
                         <div><strong>体重：</strong>${latestAccount.weight || '未填写'} 公斤</div>
                         <div><strong>属性：</strong>${latestAccount.attribute || '未填写'}</div>
                         <div><strong>SM属性：</strong>${latestAccount.smAttribute || '未填写'}</div>
-                        <div><strong>屌长：</strong>${latestAccount.dickLength || '未填写'} 厘米</div>
-                        <div><strong>屌粗：</strong>${latestAccount.dickThickness || '未填写'} 厘米</div>
+                        <div><strong>肉棒长：</strong>${latestAccount.dickLength || '未填写'} 厘米</div>
+                        <div><strong>肉棒粗：</strong>${latestAccount.dickThickness || '未填写'} 厘米</div>
                         <div><strong>特殊喜好：</strong>${latestAccount.specialPreferences || '未填写'}</div>
                         <div><strong>申请时间：</strong>${latestAccount.date || '未填写'}</div>
                     </div>
@@ -1389,39 +1439,124 @@
                     submitBtn.click();
                 }
             });
+            
+            // 搜索账号功能
+            document.getElementById('searchAccountBtn').addEventListener('click', searchAccounts);
+            document.getElementById('resetAccountSearchBtn').addEventListener('click', function() {
+                document.getElementById('accountSearch').value = '';
+                accountSearchTerm = '';
+                loadAllAccountData();
+            });
+            
+            // 按Enter键搜索
+            document.getElementById('accountSearch').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    searchAccounts();
+                }
+            });
+            
+            // 修改账号模态框
+            const editAccountModal = document.getElementById('editAccountModal');
+            const closeEditAccountModalBtn = document.getElementById('closeEditAccountModal');
+            const editAccountForm = document.getElementById('editAccountForm');
+            
+            // 关闭修改账号模态框
+            closeEditAccountModalBtn.addEventListener('click', function() {
+                editAccountModal.classList.remove('active');
+            });
+            
+            // 提交修改账号表单
+            editAccountForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const accountId = document.getElementById('editAccountId').value;
+                const index = accountData.findIndex(account => account.id === accountId);
+                
+                if (index !== -1) {
+                    // 更新账号数据
+                    accountData[index] = {
+                        id: accountId,
+                        nickname: document.getElementById('editNickname').value,
+                        username: document.getElementById('editUsername').value,
+                        phoneTail: document.getElementById('editPhoneTail').value,
+                        age: document.getElementById('editAge').value,
+                        height: document.getElementById('editHeight').value,
+                        weight: document.getElementById('editWeight').value,
+                        attribute: document.querySelector('input[name="editAttribute"]:checked').value,
+                        smAttribute: document.getElementById('editSmAttribute').value,
+                        dickLength: document.getElementById('editDickLength').value,
+                        dickThickness: document.getElementById('editDickThickness').value,
+                        specialPreferences: document.getElementById('editSpecialPreferences').value,
+                        date: accountData[index].date // 保持原日期
+                    };
+                    
+                    // 保存到localStorage
+                    localStorage.setItem('accountData', JSON.stringify(accountData));
+                    
+                    // 关闭模态框
+                    editAccountModal.classList.remove('active');
+                    
+                    // 重新加载账号数据
+                    loadAllAccountData();
+                    
+                    // 如果账号信息页面是打开的，也更新那里的显示
+                    if (document.querySelector('#account-info.tab-content.active')) {
+                        loadAccountData();
+                    }
+                    
+                    // 显示成功消息
+                    alert('账号信息修改成功！');
+                }
+            });
         }
         
-        // 加载所有账号信息
+        // 加载所有账号信息（带操作按钮）
         function loadAllAccountData() {
             const container = document.getElementById('accountQueryDataContainer');
             
-            if (accountData.length === 0) {
+            // 过滤账号
+            let filteredAccounts = accountData;
+            if (accountSearchTerm) {
+                filteredAccounts = accountData.filter(account => 
+                    (account.nickname && account.nickname.toLowerCase().includes(accountSearchTerm)) ||
+                    (account.username && account.username.toLowerCase().includes(accountSearchTerm)) ||
+                    (account.phoneTail && account.phoneTail.includes(accountSearchTerm)) ||
+                    (account.specialPreferences && account.specialPreferences.toLowerCase().includes(accountSearchTerm))
+                );
+            }
+            
+            if (filteredAccounts.length === 0) {
                 container.innerHTML = '<p class="empty-message">暂无账号数据</p>';
                 return;
             }
             
+            // 按日期排序（最新的在前面）
+            filteredAccounts.sort((a, b) => new Date(b.date) - new Date(a.date));
+            
             let html = `
-                <table class="data-table">
-                    <thead>
-                        <tr>
-                            <th>昵称</th>
-                            <th>名称</th>
-                            <th>手机尾号</th>
-                            <th>年龄</th>
-                            <th>身高(厘米)</th>
-                            <th>体重(公斤)</th>
-                            <th>属性</th>
-                            <th>SM属性</th>
-                            <th>屌长(厘米)</th>
-                            <th>屌粗(厘米)</th>
-                            <th>特殊喜好</th>
-                            <th>申请时间</th>
-                        </tr>
-                    </thead>
-                    <tbody>
+                <div class="table-responsive">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>昵称</th>
+                                <th>名称</th>
+                                <th>手机尾号</th>
+                                <th>年龄</th>
+                                <th>身高(厘米)</th>
+                                <th>体重(公斤)</th>
+                                <th>属性</th>
+                                <th>SM属性</th>
+                                <th>肉棒长(厘米)</th>
+                                <th>肉棒粗(厘米)</th>
+                                <th>特殊喜好</th>
+                                <th>申请时间</th>
+                                <th>操作</th>
+                            </tr>
+                        </thead>
+                        <tbody>
             `;
             
-            accountData.forEach(account => {
+            filteredAccounts.forEach(account => {
                 html += `
                     <tr>
                         <td>${account.nickname || '未填写'}</td>
@@ -1436,12 +1571,108 @@
                         <td>${account.dickThickness || '未填写'}</td>
                         <td>${account.specialPreferences || '未填写'}</td>
                         <td>${account.date || '未填写'}</td>
+                        <td>
+                            <div class="action-buttons">
+                                <button class="btn btn-secondary edit-account-btn" data-id="${account.id}">修改</button>
+                                <button class="btn btn-danger delete-account-btn" data-id="${account.id}">删除</button>
+                            </div>
+                        </td>
                     </tr>
                 `;
             });
             
-            html += '</tbody></table>';
+            html += '</tbody></table></div>';
             container.innerHTML = html;
+            
+            // 绑定修改按钮事件
+            document.querySelectorAll('.edit-account-btn').forEach(button => {
+                button.addEventListener('click', function() {
+                    const accountId = this.getAttribute('data-id');
+                    editAccount(accountId);
+                });
+            });
+            
+            // 绑定删除按钮事件
+            document.querySelectorAll('.delete-account-btn').forEach(button => {
+                button.addEventListener('click', function() {
+                    const accountId = this.getAttribute('data-id');
+                    deleteAccount(accountId);
+                });
+            });
+        }
+        
+        // 搜索账号
+        function searchAccounts() {
+            accountSearchTerm = document.getElementById('accountSearch').value.toLowerCase();
+            loadAllAccountData();
+        }
+        
+        // 编辑账号
+        function editAccount(accountId) {
+            const account = accountData.find(acc => acc.id === accountId);
+            
+            if (!account) {
+                alert('未找到该账号信息！');
+                return;
+            }
+            
+            const editAccountModal = document.getElementById('editAccountModal');
+            const editAccountForm = document.getElementById('editAccountForm');
+            
+            // 填充表单
+            document.getElementById('editAccountId').value = account.id;
+            document.getElementById('editNickname').value = account.nickname || '';
+            document.getElementById('editUsername').value = account.username || '';
+            document.getElementById('editPhoneTail').value = account.phoneTail || '';
+            document.getElementById('editAge').value = account.age || '';
+            document.getElementById('editHeight').value = account.height || '';
+            document.getElementById('editWeight').value = account.weight || '';
+            
+            // 设置属性单选按钮
+            if (account.attribute === '1') {
+                document.getElementById('editAttribute1').checked = true;
+            } else if (account.attribute === '0') {
+                document.getElementById('editAttribute0').checked = true;
+            }
+            
+            // 设置SM属性
+            document.getElementById('editSmAttribute').value = account.smAttribute || '';
+            
+            // 设置其他字段
+            document.getElementById('editDickLength').value = account.dickLength || '';
+            document.getElementById('editDickThickness').value = account.dickThickness || '';
+            document.getElementById('editSpecialPreferences').value = account.specialPreferences || '';
+            
+            // 显示模态框
+            editAccountModal.classList.add('active');
+        }
+        
+        // 删除账号
+        function deleteAccount(accountId) {
+            if (!confirm('确定要删除这个账号信息吗？此操作不可撤销！')) {
+                return;
+            }
+            
+            const index = accountData.findIndex(account => account.id === accountId);
+            
+            if (index !== -1) {
+                // 从数组中删除
+                accountData.splice(index, 1);
+                
+                // 保存到localStorage
+                localStorage.setItem('accountData', JSON.stringify(accountData));
+                
+                // 重新加载账号数据
+                loadAllAccountData();
+                
+                // 如果账号信息页面是打开的，也更新那里的显示
+                if (document.querySelector('#account-info.tab-content.active')) {
+                    loadAccountData();
+                }
+                
+                // 显示成功消息
+                alert('账号信息删除成功！');
+            }
         }
         
         // 发布帖子页面
@@ -1551,7 +1782,7 @@
                 
                 // 创建帖子对象
                 const post = {
-                    id: document.getElementById('postIdDisplay').textContent,
+                    id: document.getElementById('postIdDisplay').textContent.replace('发帖编号：', ''),
                     nickname: document.getElementById('postNickname').value,
                     phoneTail: document.getElementById('postPhoneTail').value,
                     title: document.getElementById('postTitle').value,
@@ -2687,8 +2918,8 @@ function loadAllAccountData() {
                     <th>体重(公斤)</th>
                     <th>属性</th>
                     <th>SM属性</th>
-                    <th>屌长(厘米)</th>
-                    <th>屌粗(厘米)</th>
+                    <th>肉棒长(厘米)</th>
+                    <th>肉棒粗(厘米)</th>
                     <th>特殊喜好</th>
                     <th>申请时间</th>
                 </tr>
