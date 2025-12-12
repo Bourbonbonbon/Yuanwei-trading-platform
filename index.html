@@ -1,1 +1,2175 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>原味交易平台</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif;
+        }
+        
+        body {
+            background-color: #f5f5f5;
+            color: #333;
+            transition: background-image 0.3s ease;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        /* 标题区域 */
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .logo img {
+            width: 75px;
+            height: 75px;
+            object-fit: cover;
+            border-radius: 8px;
+            cursor: pointer;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        
+        .logo h1 {
+            font-size: 28px;
+            color: #4a6fa5;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+        }
+        
+        /* 标签页导航 */
+        .tabs {
+            display: flex;
+            background-color: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+        
+        .tab {
+            flex: 1;
+            padding: 18px 10px;
+            text-align: center;
+            cursor: pointer;
+            background-color: #f8f9fa;
+            transition: all 0.3s ease;
+            border-bottom: 3px solid transparent;
+            font-weight: 600;
+            font-size: 16px;
+            color: #666;
+        }
+        
+        .tab:hover {
+            background-color: #e9ecef;
+        }
+        
+        .tab.active {
+            background-color: white;
+            border-bottom: 3px solid #4a6fa5;
+            color: #4a6fa5;
+        }
+        
+        /* 标签页内容 */
+        .tab-content {
+            display: none;
+            background-color: white;
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            min-height: 500px;
+        }
+        
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        /* 密码输入区域 */
+        .password-area {
+            text-align: center;
+            padding: 30px;
+            max-width: 400px;
+            margin: 0 auto;
+        }
+        
+        .password-input {
+            width: 100%;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+            margin-bottom: 15px;
+        }
+        
+        .password-btn {
+            background-color: #4a6fa5;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            transition: background-color 0.3s;
+        }
+        
+        .password-btn:hover {
+            background-color: #3a5a80;
+        }
+        
+        /* 弹窗样式 */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.7);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .modal.active {
+            display: flex;
+        }
+        
+        .modal-content {
+            background-color: white;
+            border-radius: 10px;
+            width: 90%;
+            max-width: 700px;
+            max-height: 85vh;
+            overflow-y: auto;
+            padding: 30px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+        }
+        
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .modal-header h3 {
+            font-size: 22px;
+            color: #4a6fa5;
+        }
+        
+        .close-modal {
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: #888;
+        }
+        
+        /* 表单样式 */
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #555;
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 15px;
+        }
+        
+        .form-control:focus {
+            border-color: #4a6fa5;
+            outline: none;
+        }
+        
+        .checkbox-group, .radio-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-top: 8px;
+        }
+        
+        .checkbox-item, .radio-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .form-row {
+            display: flex;
+            gap: 20px;
+        }
+        
+        .form-row .form-group {
+            flex: 1;
+        }
+        
+        .form-buttons {
+            display: flex;
+            justify-content: flex-end;
+            gap: 15px;
+            margin-top: 30px;
+        }
+        
+        .btn {
+            padding: 12px 25px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+        
+        .btn-submit {
+            background-color: #4a6fa5;
+            color: white;
+            border: none;
+        }
+        
+        .btn-submit:hover {
+            background-color: #3a5a80;
+        }
+        
+        .btn-cancel {
+            background-color: #f1f1f1;
+            color: #333;
+            border: 1px solid #ddd;
+        }
+        
+        .btn-cancel:hover {
+            background-color: #e1e1e1;
+        }
+        
+        /* 数据表格样式 */
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        
+        .data-table th, .data-table td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .data-table th {
+            background-color: #f8f9fa;
+            font-weight: 600;
+            color: #555;
+        }
+        
+        .data-table tr:hover {
+            background-color: #f8f9fa;
+        }
+        
+        .empty-data {
+            text-align: center;
+            padding: 40px;
+            color: #888;
+            font-size: 18px;
+        }
+        
+        /* 操作按钮 */
+        .action-buttons {
+            display: flex;
+            gap: 8px;
+        }
+        
+        .btn-edit, .btn-delete, .btn-search {
+            padding: 6px 12px;
+            border-radius: 4px;
+            border: none;
+            cursor: pointer;
+            font-size: 13px;
+        }
+        
+        .btn-edit {
+            background-color: #ffc107;
+            color: #333;
+        }
+        
+        .btn-delete {
+            background-color: #dc3545;
+            color: white;
+        }
+        
+        .btn-search {
+            background-color: #28a745;
+            color: white;
+        }
+        
+        .search-box {
+            margin-bottom: 20px;
+            display: flex;
+            gap: 10px;
+        }
+        
+        .search-box input {
+            flex: 1;
+            padding: 10px 15px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+        }
+        
+        .search-box button {
+            padding: 10px 20px;
+            background-color: #4a6fa5;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+        
+        /* 设置页面样式 */
+        .settings-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+        
+        .setting-card {
+            background-color: #f8f9fa;
+            border-radius: 10px;
+            padding: 25px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+        
+        .setting-card h3 {
+            margin-bottom: 20px;
+            color: #4a6fa5;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        .upload-area {
+            border: 2px dashed #ccc;
+            border-radius: 8px;
+            padding: 30px;
+            text-align: center;
+            margin-bottom: 20px;
+            cursor: pointer;
+            transition: border-color 0.3s;
+        }
+        
+        .upload-area:hover {
+            border-color: #4a6fa5;
+        }
+        
+        .upload-area i {
+            font-size: 40px;
+            color: #888;
+            margin-bottom: 10px;
+        }
+        
+        .current-image {
+            margin-top: 20px;
+            text-align: center;
+        }
+        
+        .current-image img {
+            max-width: 100%;
+            max-height: 200px;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+        
+        /* 戳戳我页面样式 */
+        .poke-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 500px;
+        }
+        
+        .poke-image {
+            max-width: 80%;
+            max-height: 500px;
+            border-radius: 10px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            cursor: pointer;
+        }
+        
+        /* 图片查看模态框 */
+        .image-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.9);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .image-modal.active {
+            display: flex;
+        }
+        
+        .image-modal img {
+            max-width: 90%;
+            max-height: 90%;
+            border-radius: 8px;
+        }
+        
+        .close-image {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            color: white;
+            font-size: 40px;
+            cursor: pointer;
+        }
+        
+        /* 密码提示 */
+        .password-hint {
+            text-align: center;
+            margin-top: 20px;
+            color: #666;
+            font-size: 14px;
+        }
+        
+        /* 响应式调整 */
+        @media (max-width: 768px) {
+            .tabs {
+                flex-direction: column;
+            }
+            
+            .form-row {
+                flex-direction: column;
+                gap: 0;
+            }
+            
+            .modal-content {
+                width: 95%;
+                padding: 20px;
+            }
+            
+            .header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+            
+            .settings-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- 标题区域 -->
+        <div class="header">
+            <div class="logo">
+                <img id="logo-image" src="" alt="平台LOGO">
+                <h1>原味交易平台</h1>
+            </div>
+        </div>
+        
+        <!-- 标签页导航 -->
+        <div class="tabs">
+            <div class="tab active" data-tab="account">账号信息</div>
+            <div class="tab" data-tab="query">账号信息查询</div>
+            <div class="tab" data-tab="post">发布帖子</div>
+            <div class="tab" data-tab="reply">回复帖子</div>
+            <div class="tab" data-tab="settings">设置</div>
+            <div class="tab" data-tab="poke">戳戳我</div>
+        </div>
+        
+        <!-- 账号信息标签页 -->
+        <div id="account" class="tab-content active">
+            <h2><i class="fas fa-user-circle"></i> 账号信息</h2>
+            <p class="password-hint">在此页面注册您的账号信息</p>
+            
+            <div style="text-align: center; margin: 40px 0;">
+                <button id="openAccountModal" class="password-btn">注册账号</button>
+            </div>
+            
+            <!-- 账号注册弹窗 -->
+            <div id="accountModal" class="modal">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h3>账号注册</h3>
+                        <button class="close-modal">&times;</button>
+                    </div>
+                    <form id="accountForm">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="form-label">昵称</label>
+                                <input type="text" class="form-control" name="nickname" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">名称</label>
+                                <input type="text" class="form-control" name="name" required>
+                            </div>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="form-label">手机尾号</label>
+                                <input type="text" class="form-control" name="phone" maxlength="4" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">年龄</label>
+                                <input type="number" class="form-control" name="age" min="18" max="100" required>
+                            </div>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="form-label">身高 (厘米)</label>
+                                <input type="number" class="form-control" name="height" min="100" max="250" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">体重 (公斤)</label>
+                                <input type="number" class="form-control" name="weight" min="30" max="200" step="0.1" required>
+                            </div>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="form-label">属性</label>
+                                <div class="radio-group">
+                                    <label class="radio-item">
+                                        <input type="radio" name="attribute" value="1" required> 1
+                                    </label>
+                                    <label class="radio-item">
+                                        <input type="radio" name="attribute" value="0" required> 0
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">SM属性</label>
+                                <select class="form-control" name="smAttribute" required>
+                                    <option value="">请选择</option>
+                                    <option value="S">S</option>
+                                    <option value="M">M</option>
+                                    <option value="Sub">Sub</option>
+                                    <option value="Dom">Dom</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="form-label">屌长 (厘米)</label>
+                                <input type="number" class="form-control" name="penisLength" min="1" max="30" step="0.1" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">屌粗 (厘米)</label>
+                                <input type="number" class="form-control" name="penisGirth" min="1" max="20" step="0.1" required>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">特殊喜好</label>
+                            <div class="checkbox-group">
+                                <label class="checkbox-item">
+                                    <input type="checkbox" name="preference" value="原味"> 原味
+                                </label>
+                                <label class="checkbox-item">
+                                    <input type="checkbox" name="preference" value="圣水"> 圣水
+                                </label>
+                                <label class="checkbox-item">
+                                    <input type="checkbox" name="preference" value="捆绑"> 捆绑
+                                </label>
+                                <label class="checkbox-item">
+                                    <input type="checkbox" name="preference" value="其他"> 其他
+                                </label>
+                            </div>
+                            <input type="text" class="form-control" id="otherPreference" placeholder="请输入其他特殊喜好" style="margin-top: 10px; display: none;">
+                        </div>
+                        
+                        <div class="form-buttons">
+                            <button type="button" class="btn btn-cancel close-modal">取消</button>
+                            <button type="submit" class="btn btn-submit">提交注册</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            
+            <!-- 密码提示弹窗 -->
+            <div id="passwordModal" class="modal">
+                <div class="modal-content" style="text-align: center; max-width: 400px;">
+                    <div class="modal-header" style="justify-content: center;">
+                        <h3>注册成功</h3>
+                    </div>
+                    <div style="padding: 30px;">
+                        <i class="fas fa-key" style="font-size: 50px; color: #4a6fa5; margin-bottom: 20px;"></i>
+                        <h3 style="margin-bottom: 20px;">您的用户密码为：</h3>
+                        <div style="font-size: 28px; font-weight: bold; color: #4a6fa5; margin-bottom: 30px;">000000</div>
+                        <p style="color: #666; font-size: 14px;">请妥善保存您的密码，5秒后自动关闭此窗口</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 账号信息查询标签页 -->
+        <div id="query" class="tab-content">
+            <h2><i class="fas fa-search"></i> 账号信息查询</h2>
+            
+            <!-- 密码输入区域 -->
+            <div id="queryPasswordArea" class="password-area">
+                <h3>请输入管理密码</h3>
+                <input type="password" id="queryPassword" class="password-input" placeholder="请输入密码">
+                <button id="queryPasswordBtn" class="password-btn">确认</button>
+                <p class="password-hint">请输入管理密码以查看账号信息</p>
+            </div>
+            
+            <!-- 数据区域（密码验证后显示） -->
+            <div id="queryDataArea" style="display: none;">
+                <div class="search-box">
+                    <input type="text" id="searchAccount" placeholder="搜索昵称、名称或手机尾号">
+                    <button id="searchAccountBtn">搜索</button>
+                </div>
+                
+                <div id="accountData">
+                    <!-- 账号数据将通过JavaScript动态加载 -->
+                </div>
+            </div>
+        </div>
+        
+        <!-- 发布帖子标签页 -->
+        <div id="post" class="tab-content">
+            <h2><i class="fas fa-edit"></i> 发布帖子</h2>
+            
+            <!-- 密码输入区域 -->
+            <div id="postPasswordArea" class="password-area">
+                <h3>请输入用户密码</h3>
+                <input type="password" id="postPassword" class="password-input" placeholder="请输入密码">
+                <button id="postPasswordBtn" class="password-btn">确认</button>
+                <p class="password-hint">请输入用户密码以发布帖子</p>
+            </div>
+            
+            <!-- 数据区域（密码验证后显示） -->
+            <div id="postDataArea" style="display: none;">
+                <div style="text-align: center; margin: 20px 0;">
+                    <button id="openPostModal" class="password-btn">发布新帖子</button>
+                </div>
+                
+                <!-- 发布帖子弹窗 -->
+                <div id="postModal" class="modal">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h3>发布新帖子</h3>
+                            <button class="close-modal">&times;</button>
+                        </div>
+                        <form id="postForm">
+                            <div class="form-group">
+                                <label class="form-label">发帖编号</label>
+                                <input type="text" class="form-control" id="postNumber" readonly>
+                            </div>
+                            
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label class="form-label">昵称</label>
+                                    <input type="text" class="form-control" name="postNickname" required>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">手机尾号</label>
+                                    <input type="text" class="form-control" name="postPhone" maxlength="4" required>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="form-label">帖子标题</label>
+                                <input type="text" class="form-control" name="postTitle" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="form-label">发布日期</label>
+                                <input type="text" class="form-control" id="postDate" readonly>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="form-label">交易类型</label>
+                                <div class="checkbox-group">
+                                    <label class="checkbox-item">
+                                        <input type="checkbox" name="tradeType" value="袜子"> 袜子
+                                    </label>
+                                    <label class="checkbox-item">
+                                        <input type="checkbox" name="tradeType" value="内裤"> 内裤
+                                    </label>
+                                    <label class="checkbox-item">
+                                        <input type="checkbox" name="tradeType" value="鞋"> 鞋
+                                    </label>
+                                    <label class="checkbox-item">
+                                        <input type="checkbox" name="tradeType" value="其他"> 其他
+                                    </label>
+                                </div>
+                                <input type="text" class="form-control" id="otherTradeType" placeholder="请输入其他交易类型" style="margin-top: 10px; display: none;">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="form-label">定向人群</label>
+                                <div class="checkbox-group">
+                                    <label class="checkbox-item">
+                                        <input type="checkbox" name="targetGroup" value="军"> 军
+                                    </label>
+                                    <label class="checkbox-item">
+                                        <input type="checkbox" name="targetGroup" value="警"> 警
+                                    </label>
+                                    <label class="checkbox-item">
+                                        <input type="checkbox" name="targetGroup" value="消"> 消
+                                    </label>
+                                    <label class="checkbox-item">
+                                        <input type="checkbox" name="targetGroup" value="保安"> 保安
+                                    </label>
+                                    <label class="checkbox-item">
+                                        <input type="checkbox" name="targetGroup" value="民工"> 民工
+                                    </label>
+                                    <label class="checkbox-item">
+                                        <input type="checkbox" name="targetGroup" value="其他"> 其他
+                                    </label>
+                                </div>
+                                <input type="text" class="form-control" id="otherTargetGroup" placeholder="请输入其他定向人群" style="margin-top: 10px; display: none;">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="form-label">交易方式</label>
+                                <div class="radio-group">
+                                    <label class="radio-item">
+                                        <input type="radio" name="tradeMethod" value="快递" required> 快递
+                                    </label>
+                                    <label class="radio-item">
+                                        <input type="radio" name="tradeMethod" value="面交" required> 面交
+                                    </label>
+                                    <label class="radio-item">
+                                        <input type="radio" name="tradeMethod" value="其他" required> 其他
+                                    </label>
+                                </div>
+                                <input type="text" class="form-control" id="otherTradeMethod" placeholder="请输入其他交易方式" style="margin-top: 10px; display: none;">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="form-label">交易价格 (元)</label>
+                                <input type="number" class="form-control" name="price" min="0" step="0.01" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="form-label">要求</label>
+                                <textarea class="form-control" name="requirements" rows="4"></textarea>
+                            </div>
+                            
+                            <div class="form-buttons">
+                                <button type="button" class="btn btn-cancel close-modal">取消</button>
+                                <button type="submit" class="btn btn-submit">发布帖子</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                
+                <div class="search-box">
+                    <input type="text" id="searchPost" placeholder="搜索帖子标题、昵称或编号">
+                    <button id="searchPostBtn">搜索</button>
+                </div>
+                
+                <div id="postData">
+                    <!-- 帖子数据将通过JavaScript动态加载 -->
+                </div>
+            </div>
+        </div>
+        
+        <!-- 回复帖子标签页 -->
+        <div id="reply" class="tab-content">
+            <h2><i class="fas fa-reply"></i> 回复帖子</h2>
+            
+            <!-- 密码输入区域 -->
+            <div id="replyPasswordArea" class="password-area">
+                <h3>请输入用户密码</h3>
+                <input type="password" id="replyPassword" class="password-input" placeholder="请输入密码">
+                <button id="replyPasswordBtn" class="password-btn">确认</button>
+                <p class="password-hint">请输入用户密码以回复帖子</p>
+            </div>
+            
+            <!-- 数据区域（密码验证后显示） -->
+            <div id="replyDataArea" style="display: none;">
+                <div style="text-align: center; margin: 20px 0;">
+                    <button id="openReplyModal" class="password-btn">回复帖子</button>
+                </div>
+                
+                <!-- 回复帖子弹窗 -->
+                <div id="replyModal" class="modal">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h3>回复帖子</h3>
+                            <button class="close-modal">&times;</button>
+                        </div>
+                        <form id="replyForm">
+                            <div class="form-group">
+                                <label class="form-label">原帖编号</label>
+                                <input type="text" class="form-control" name="originalPostNumber" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="form-label">发帖编号</label>
+                                <input type="text" class="form-control" id="replyNumber" readonly>
+                            </div>
+                            
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label class="form-label">昵称</label>
+                                    <input type="text" class="form-control" name="replyNickname" required>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">手机尾号</label>
+                                    <input type="text" class="form-control" name="replyPhone" maxlength="4" required>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="form-label">回帖日期</label>
+                                <input type="text" class="form-control" id="replyDate" readonly>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="form-label">交易类型</label>
+                                <div class="checkbox-group">
+                                    <label class="checkbox-item">
+                                        <input type="checkbox" name="replyTradeType" value="袜子"> 袜子
+                                    </label>
+                                    <label class="checkbox-item">
+                                        <input type="checkbox" name="replyTradeType" value="内裤"> 内裤
+                                    </label>
+                                    <label class="checkbox-item">
+                                        <input type="checkbox" name="replyTradeType" value="鞋"> 鞋
+                                    </label>
+                                    <label class="checkbox-item">
+                                        <input type="checkbox" name="replyTradeType" value="其他"> 其他
+                                    </label>
+                                </div>
+                                <input type="text" class="form-control" id="otherReplyTradeType" placeholder="请输入其他交易类型" style="margin-top: 10px; display: none;">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="form-label">定向人群</label>
+                                <div class="checkbox-group">
+                                    <label class="checkbox-item">
+                                        <input type="checkbox" name="replyTargetGroup" value="军"> 军
+                                    </label>
+                                    <label class="checkbox-item">
+                                        <input type="checkbox" name="replyTargetGroup" value="警"> 警
+                                    </label>
+                                    <label class="checkbox-item">
+                                        <input type="checkbox" name="replyTargetGroup" value="消"> 消
+                                    </label>
+                                    <label class="checkbox-item">
+                                        <input type="checkbox" name="replyTargetGroup" value="保安"> 保安
+                                    </label>
+                                    <label class="checkbox-item">
+                                        <input type="checkbox" name="replyTargetGroup" value="民工"> 民工
+                                    </label>
+                                    <label class="checkbox-item">
+                                        <input type="checkbox" name="replyTargetGroup" value="其他"> 其他
+                                    </label>
+                                </div>
+                                <input type="text" class="form-control" id="otherReplyTargetGroup" placeholder="请输入其他定向人群" style="margin-top: 10px; display: none;">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="form-label">交易方式</label>
+                                <div class="radio-group">
+                                    <label class="radio-item">
+                                        <input type="radio" name="replyTradeMethod" value="快递" required> 快递
+                                    </label>
+                                    <label class="radio-item">
+                                        <input type="radio" name="replyTradeMethod" value="面交" required> 面交
+                                    </label>
+                                    <label class="radio-item">
+                                        <input type="radio" name="replyTradeMethod" value="其他" required> 其他
+                                    </label>
+                                </div>
+                                <input type="text" class="form-control" id="otherReplyTradeMethod" placeholder="请输入其他交易方式" style="margin-top: 10px; display: none;">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="form-label">交易价格</label>
+                                <div class="radio-group">
+                                    <label class="radio-item">
+                                        <input type="radio" name="replyPrice" value="原帖价格" required> 原帖价格
+                                    </label>
+                                    <label class="radio-item">
+                                        <input type="radio" name="replyPrice" value="回帖价格" required> 回帖价格
+                                    </label>
+                                    <label class="radio-item">
+                                        <input type="radio" name="replyPrice" value="其他" required> 其他
+                                    </label>
+                                </div>
+                                <input type="text" class="form-control" id="otherReplyPrice" placeholder="请输入其他价格" style="margin-top: 10px; display: none;">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="form-label">备注</label>
+                                <textarea class="form-control" name="replyNote" rows="4"></textarea>
+                            </div>
+                            
+                            <div class="form-buttons">
+                                <button type="button" class="btn btn-cancel close-modal">取消</button>
+                                <button type="submit" class="btn btn-submit">提交回复</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                
+                <div class="search-box">
+                    <input type="text" id="searchReply" placeholder="搜索回帖编号、昵称或原帖编号">
+                    <button id="searchReplyBtn">搜索</button>
+                </div>
+                
+                <div id="replyData">
+                    <!-- 回复数据将通过JavaScript动态加载 -->
+                </div>
+            </div>
+        </div>
+        
+        <!-- 设置标签页 -->
+        <div id="settings" class="tab-content">
+            <h2><i class="fas fa-cog"></i> 设置</h2>
+            
+            <!-- 密码输入区域 -->
+            <div id="settingsPasswordArea" class="password-area">
+                <h3>请输入管理密码</h3>
+                <input type="password" id="settingsPassword" class="password-input" placeholder="请输入密码">
+                <button id="settingsPasswordBtn" class="password-btn">确认</button>
+                <p class="password-hint">请输入管理密码以修改设置</p>
+            </div>
+            
+            <!-- 设置区域（密码验证后显示） -->
+            <div id="settingsArea" style="display: none;">
+                <div class="settings-grid">
+                    <!-- LOGO设置 -->
+                    <div class="setting-card">
+                        <h3>LOGO设置</h3>
+                        <p style="color: #666; margin-bottom: 20px;">支持上传JPG、JPEG、PNG格式，尺寸为75cm*75cm</p>
+                        
+                        <div class="upload-area" id="logoUploadArea">
+                            <i class="fas fa-upload"></i>
+                            <p>点击或拖拽上传LOGO图片</p>
+                            <input type="file" id="logoInput" accept=".jpg,.jpeg,.png" style="display: none;">
+                        </div>
+                        
+                        <div class="current-image">
+                            <p>当前LOGO：</p>
+                            <img id="currentLogo" src="" alt="当前LOGO" style="display: none;">
+                            <p id="noLogo" style="color: #888; margin-top: 10px;">暂无LOGO</p>
+                        </div>
+                        
+                        <div style="margin-top: 20px; display: flex; gap: 10px;">
+                            <button id="changeLogoBtn" class="btn btn-edit" style="display: none;">更换LOGO</button>
+                            <button id="deleteLogoBtn" class="btn btn-delete" style="display: none;">删除LOGO</button>
+                        </div>
+                    </div>
+                    
+                    <!-- 背景设置 -->
+                    <div class="setting-card">
+                        <h3>背景设置</h3>
+                        <p style="color: #666; margin-bottom: 20px;">支持上传JPG、JPEG、PNG格式</p>
+                        
+                        <div class="upload-area" id="bgUploadArea">
+                            <i class="fas fa-upload"></i>
+                            <p>点击或拖拽上传背景图片</p>
+                            <input type="file" id="bgInput" accept=".jpg,.jpeg,.png" style="display: none;">
+                        </div>
+                        
+                        <div class="current-image">
+                            <p>当前背景：</p>
+                            <img id="currentBg" src="" alt="当前背景" style="display: none;">
+                            <p id="noBg" style="color: #888; margin-top: 10px;">暂无背景</p>
+                        </div>
+                        
+                        <div style="margin-top: 20px; display: flex; gap: 10px;">
+                            <button id="changeBgBtn" class="btn btn-edit" style="display: none;">更换背景</button>
+                            <button id="deleteBgBtn" class="btn btn-delete" style="display: none;">删除背景</button>
+                        </div>
+                    </div>
+                    
+                    <!-- 戳戳我图片设置 -->
+                    <div class="setting-card">
+                        <h3>戳戳我图片设置</h3>
+                        <p style="color: #666; margin-bottom: 20px;">支持上传JPG、JPEG、PNG格式</p>
+                        
+                        <div class="upload-area" id="pokeUploadArea">
+                            <i class="fas fa-upload"></i>
+                            <p>点击或拖拽上传戳戳我图片</p>
+                            <input type="file" id="pokeInput" accept=".jpg,.jpeg,.png" style="display: none;">
+                        </div>
+                        
+                        <div class="current-image">
+                            <p>当前图片：</p>
+                            <img id="currentPoke" src="" alt="当前戳戳我图片" style="display: none;">
+                            <p id="noPoke" style="color: #888; margin-top: 10px;">暂无图片</p>
+                        </div>
+                        
+                        <div style="margin-top: 20px; display: flex; gap: 10px;">
+                            <button id="changePokeBtn" class="btn btn-edit" style="display: none;">更换图片</button>
+                            <button id="deletePokeBtn" class="btn btn-delete" style="display: none;">删除图片</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 戳戳我标签页 -->
+        <div id="poke" class="tab-content">
+            <h2><i class="fas fa-heart"></i> 戳戳我</h2>
+            <div class="poke-container">
+                <img id="pokeImage" class="poke-image" src="" alt="戳戳我图片">
+                <p id="noPokeImage" style="color: #888; font-size: 18px;">请先在设置页面上传戳戳我图片</p>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 图片查看模态框 -->
+    <div id="imageModal" class="image-modal">
+        <span class="close-image">&times;</span>
+        <img id="modalImage" src="" alt="查看图片">
+    </div>
 
+    <script>
+        // 全局变量
+        const ADMIN_PASSWORD = "740302";
+        const USER_PASSWORD = "000000";
+        let accounts = JSON.parse(localStorage.getItem('accounts')) || [];
+        let posts = JSON.parse(localStorage.getItem('posts')) || [];
+        let replies = JSON.parse(localStorage.getItem('replies')) || [];
+        let settings = JSON.parse(localStorage.getItem('settings')) || {};
+        let activeTab = localStorage.getItem('activeTab') || 'account';
+        let postCounter = localStorage.getItem('postCounter') || 0;
+        let replyCounter = localStorage.getItem('replyCounter') || 0;
+        
+        // DOM加载完成后初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            // 初始化标签页
+            initTabs();
+            
+            // 初始化账号信息页面
+            initAccountPage();
+            
+            // 初始化查询页面
+            initQueryPage();
+            
+            // 初始化发布帖子页面
+            initPostPage();
+            
+            // 初始化回复帖子页面
+            initReplyPage();
+            
+            // 初始化设置页面
+            initSettingsPage();
+            
+            // 初始化戳戳我页面
+            initPokePage();
+            
+            // 加载设置
+            loadSettings();
+            
+            // 激活上次的标签页
+            document.querySelector(`[data-tab="${activeTab}"]`).click();
+        });
+        
+        // 初始化标签页切换
+        function initTabs() {
+            const tabs = document.querySelectorAll('.tab');
+            const tabContents = document.querySelectorAll('.tab-content');
+            
+            tabs.forEach(tab => {
+                tab.addEventListener('click', function() {
+                    const tabId = this.getAttribute('data-tab');
+                    
+                    // 更新活动标签
+                    tabs.forEach(t => t.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    // 显示对应内容
+                    tabContents.forEach(content => {
+                        content.classList.remove('active');
+                        if (content.id === tabId) {
+                            content.classList.add('active');
+                        }
+                    });
+                    
+                    // 保存当前活动标签
+                    localStorage.setItem('activeTab', tabId);
+                });
+            });
+        }
+        
+        // 初始化账号信息页面
+        function initAccountPage() {
+            const openAccountModalBtn = document.getElementById('openAccountModal');
+            const accountModal = document.getElementById('accountModal');
+            const passwordModal = document.getElementById('passwordModal');
+            const closeModalBtns = document.querySelectorAll('.close-modal');
+            const accountForm = document.getElementById('accountForm');
+            const otherPreferenceInput = document.getElementById('otherPreference');
+            
+            // 打开账号注册弹窗
+            openAccountModalBtn.addEventListener('click', function() {
+                accountModal.classList.add('active');
+            });
+            
+            // 关闭弹窗
+            closeModalBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    accountModal.classList.remove('active');
+                    passwordModal.classList.remove('active');
+                });
+            });
+            
+            // 特殊喜好其他选项显示/隐藏
+            const preferenceCheckboxes = document.querySelectorAll('input[name="preference"]');
+            preferenceCheckboxes.forEach(checkbox => {
+                checkbox.addEventListener('change', function() {
+                    if (this.value === '其他' && this.checked) {
+                        otherPreferenceInput.style.display = 'block';
+                    } else if (this.value === '其他' && !this.checked) {
+                        otherPreferenceInput.style.display = 'none';
+                    }
+                });
+            });
+            
+            // 提交账号注册表单
+            accountForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                // 获取表单数据
+                const formData = new FormData(this);
+                const account = {};
+                
+                for (let [key, value] of formData.entries()) {
+                    if (key === 'preference') {
+                        if (!account.preference) account.preference = [];
+                        account.preference.push(value);
+                    } else {
+                        account[key] = value;
+                    }
+                }
+                
+                // 处理特殊喜好中的"其他"
+                const otherPreference = otherPreferenceInput.value;
+                if (otherPreference) {
+                    if (!account.preference) account.preference = [];
+                    account.preference.push(otherPreference);
+                }
+                
+                // 添加ID和时间戳
+                account.id = Date.now();
+                account.createdAt = new Date().toLocaleString();
+                
+                // 保存到本地存储
+                accounts.push(account);
+                localStorage.setItem('accounts', JSON.stringify(accounts));
+                
+                // 关闭注册弹窗，显示密码弹窗
+                accountModal.classList.remove('active');
+                passwordModal.classList.add('active');
+                
+                // 5秒后关闭密码弹窗
+                setTimeout(() => {
+                    passwordModal.classList.remove('active');
+                    accountForm.reset();
+                    otherPreferenceInput.style.display = 'none';
+                }, 5000);
+            });
+        }
+        
+        // 初始化查询页面
+        function initQueryPage() {
+            const queryPasswordBtn = document.getElementById('queryPasswordBtn');
+            const queryPassword = document.getElementById('queryPassword');
+            const queryPasswordArea = document.getElementById('queryPasswordArea');
+            const queryDataArea = document.getElementById('queryDataArea');
+            const searchAccount = document.getElementById('searchAccount');
+            const searchAccountBtn = document.getElementById('searchAccountBtn');
+            const accountData = document.getElementById('accountData');
+            
+            // 密码验证
+            queryPasswordBtn.addEventListener('click', function() {
+                if (queryPassword.value === ADMIN_PASSWORD) {
+                    queryPasswordArea.style.display = 'none';
+                    queryDataArea.style.display = 'block';
+                    displayAccounts();
+                } else {
+                    alert('密码错误！');
+                    queryPassword.value = '';
+                }
+            });
+            
+            // 搜索功能
+            searchAccountBtn.addEventListener('click', function() {
+                displayAccounts(searchAccount.value);
+            });
+            
+            // 搜索框回车键
+            searchAccount.addEventListener('keyup', function(e) {
+                if (e.key === 'Enter') {
+                    displayAccounts(searchAccount.value);
+                }
+            });
+            
+            // 显示账号数据
+            function displayAccounts(searchTerm = '') {
+                let filteredAccounts = accounts;
+                
+                if (searchTerm) {
+                    filteredAccounts = accounts.filter(account => 
+                        account.nickname?.includes(searchTerm) || 
+                        account.name?.includes(searchTerm) || 
+                        account.phone?.includes(searchTerm)
+                    );
+                }
+                
+                if (filteredAccounts.length === 0) {
+                    accountData.innerHTML = '<div class="empty-data">等待数据上传</div>';
+                    return;
+                }
+                
+                let html = '<table class="data-table"><thead><tr><th>昵称</th><th>名称</th><th>年龄</th><th>身高(厘米)</th><th>体重(公斤)</th><th>属性</th><th>SM属性</th><th>屌长(厘米)</th><th>屌粗(厘米)</th><th>特殊喜好</th><th>操作</th></tr></thead><tbody>';
+                
+                filteredAccounts.forEach(account => {
+                    html += `
+                        <tr>
+                            <td>${account.nickname || ''}</td>
+                            <td>${account.name || ''}</td>
+                            <td>${account.age || ''}</td>
+                            <td>${account.height || ''}</td>
+                            <td>${account.weight || ''}</td>
+                            <td>${account.attribute || ''}</td>
+                            <td>${account.smAttribute || ''}</td>
+                            <td>${account.penisLength || ''}</td>
+                            <td>${account.penisGirth || ''}</td>
+                            <td>${Array.isArray(account.preference) ? account.preference.join(', ') : account.preference || ''}</td>
+                            <td>
+                                <div class="action-buttons">
+                                    <button class="btn-edit" onclick="editAccount(${account.id})">修改</button>
+                                    <button class="btn-delete" onclick="deleteAccount(${account.id})">删除</button>
+                                </div>
+                            </td>
+                        </tr>
+                    `;
+                });
+                
+                html += '</tbody></table>';
+                accountData.innerHTML = html;
+            }
+        }
+        
+        // 初始化发布帖子页面
+        function initPostPage() {
+            const postPasswordBtn = document.getElementById('postPasswordBtn');
+            const postPassword = document.getElementById('postPassword');
+            const postPasswordArea = document.getElementById('postPasswordArea');
+            const postDataArea = document.getElementById('postDataArea');
+            const openPostModalBtn = document.getElementById('openPostModal');
+            const postModal = document.getElementById('postModal');
+            const postForm = document.getElementById('postForm');
+            const postNumber = document.getElementById('postNumber');
+            const postDate = document.getElementById('postDate');
+            const otherTradeType = document.getElementById('otherTradeType');
+            const otherTargetGroup = document.getElementById('otherTargetGroup');
+            const otherTradeMethod = document.getElementById('otherTradeMethod');
+            const searchPost = document.getElementById('searchPost');
+            const searchPostBtn = document.getElementById('searchPostBtn');
+            const postData = document.getElementById('postData');
+            
+            // 密码验证
+            postPasswordBtn.addEventListener('click', function() {
+                if (postPassword.value === USER_PASSWORD) {
+                    postPasswordArea.style.display = 'none';
+                    postDataArea.style.display = 'block';
+                    displayPosts();
+                } else {
+                    alert('密码错误！');
+                    postPassword.value = '';
+                }
+            });
+            
+            // 打开发布帖子弹窗
+            openPostModalBtn.addEventListener('click', function() {
+                // 生成发帖编号
+                const now = new Date();
+                const dateStr = now.getFullYear() + 
+                               String(now.getMonth() + 1).padStart(2, '0') + 
+                               String(now.getDate()).padStart(2, '0');
+                
+                // 生成序号
+                postCounter++;
+                if (postCounter > 99) postCounter = 1;
+                const seq = String(postCounter).padStart(3, '0');
+                
+                postNumber.value = dateStr + seq;
+                localStorage.setItem('postCounter', postCounter);
+                
+                // 设置发布日期
+                postDate.value = dateStr + ' ' + 
+                                String(now.getHours()).padStart(2, '0') + 
+                                ':' + 
+                                String(now.getMinutes()).padStart(2, '0');
+                
+                postModal.classList.add('active');
+            });
+            
+            // 交易类型其他选项
+            document.querySelectorAll('input[name="tradeType"]').forEach(checkbox => {
+                checkbox.addEventListener('change', function() {
+                    if (this.value === '其他' && this.checked) {
+                        otherTradeType.style.display = 'block';
+                    } else if (this.value === '其他' && !this.checked) {
+                        otherTradeType.style.display = 'none';
+                        otherTradeType.value = '';
+                    }
+                });
+            });
+            
+            // 定向人群其他选项
+            document.querySelectorAll('input[name="targetGroup"]').forEach(checkbox => {
+                checkbox.addEventListener('change', function() {
+                    if (this.value === '其他' && this.checked) {
+                        otherTargetGroup.style.display = 'block';
+                    } else if (this.value === '其他' && !this.checked) {
+                        otherTargetGroup.style.display = 'none';
+                        otherTargetGroup.value = '';
+                    }
+                });
+            });
+            
+            // 交易方式其他选项
+            document.querySelectorAll('input[name="tradeMethod"]').forEach(radio => {
+                radio.addEventListener('change', function() {
+                    if (this.value === '其他') {
+                        otherTradeMethod.style.display = 'block';
+                    } else {
+                        otherTradeMethod.style.display = 'none';
+                        otherTradeMethod.value = '';
+                    }
+                });
+            });
+            
+            // 提交发布帖子表单
+            postForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const formData = new FormData(this);
+                const post = {};
+                
+                for (let [key, value] of formData.entries()) {
+                    if (key === 'tradeType' || key === 'targetGroup') {
+                        if (!post[key]) post[key] = [];
+                        post[key].push(value);
+                    } else {
+                        post[key] = value;
+                    }
+                }
+                
+                // 处理其他选项
+                if (otherTradeType.value) {
+                    if (!post.tradeType) post.tradeType = [];
+                    post.tradeType.push(otherTradeType.value);
+                }
+                
+                if (otherTargetGroup.value) {
+                    if (!post.targetGroup) post.targetGroup = [];
+                    post.targetGroup.push(otherTargetGroup.value);
+                }
+                
+                if (otherTradeMethod.value) {
+                    post.tradeMethod = otherTradeMethod.value;
+                }
+                
+                // 添加ID
+                post.id = Date.now();
+                
+                // 保存到本地存储
+                posts.push(post);
+                localStorage.setItem('posts', JSON.stringify(posts));
+                
+                // 关闭弹窗并重置表单
+                postModal.classList.remove('active');
+                postForm.reset();
+                otherTradeType.style.display = 'none';
+                otherTargetGroup.style.display = 'none';
+                otherTradeMethod.style.display = 'none';
+                
+                // 刷新帖子列表
+                displayPosts();
+            });
+            
+            // 搜索功能
+            searchPostBtn.addEventListener('click', function() {
+                displayPosts(searchPost.value);
+            });
+            
+            // 搜索框回车键
+            searchPost.addEventListener('keyup', function(e) {
+                if (e.key === 'Enter') {
+                    displayPosts(searchPost.value);
+                }
+            });
+            
+            // 显示帖子数据
+            function displayPosts(searchTerm = '') {
+                let filteredPosts = posts;
+                
+                if (searchTerm) {
+                    filteredPosts = posts.filter(post => 
+                        post.postTitle?.includes(searchTerm) || 
+                        post.postNickname?.includes(searchTerm) || 
+                        post.postNumber?.includes(searchTerm)
+                    );
+                }
+                
+                if (filteredPosts.length === 0) {
+                    postData.innerHTML = '<div class="empty-data">等待发帖中</div>';
+                    return;
+                }
+                
+                let html = '<table class="data-table"><thead><tr><th>发帖编号</th><th>昵称</th><th>帖子标题</th><th>交易类型</th><th>交易价格</th><th>发布日期</th><th>操作</th></tr></thead><tbody>';
+                
+                filteredPosts.forEach(post => {
+                    html += `
+                        <tr>
+                            <td>${post.postNumber || ''}</td>
+                            <td>${post.postNickname || ''}</td>
+                            <td>${post.postTitle || ''}</td>
+                            <td>${Array.isArray(post.tradeType) ? post.tradeType.join(', ') : post.tradeType || ''}</td>
+                            <td>${post.price || ''}元</td>
+                            <td>${post.postDate || ''}</td>
+                            <td>
+                                <div class="action-buttons">
+                                    <button class="btn-edit" onclick="editPost(${post.id})">修改</button>
+                                    <button class="btn-delete" onclick="deletePost(${post.id})">删除</button>
+                                </div>
+                            </td>
+                        </tr>
+                    `;
+                });
+                
+                html += '</tbody></table>';
+                postData.innerHTML = html;
+            }
+        }
+        
+        // 初始化回复帖子页面
+        function initReplyPage() {
+            const replyPasswordBtn = document.getElementById('replyPasswordBtn');
+            const replyPassword = document.getElementById('replyPassword');
+            const replyPasswordArea = document.getElementById('replyPasswordArea');
+            const replyDataArea = document.getElementById('replyDataArea');
+            const openReplyModalBtn = document.getElementById('openReplyModal');
+            const replyModal = document.getElementById('replyModal');
+            const replyForm = document.getElementById('replyForm');
+            const replyNumber = document.getElementById('replyNumber');
+            const replyDate = document.getElementById('replyDate');
+            const otherReplyTradeType = document.getElementById('otherReplyTradeType');
+            const otherReplyTargetGroup = document.getElementById('otherReplyTargetGroup');
+            const otherReplyTradeMethod = document.getElementById('otherReplyTradeMethod');
+            const otherReplyPrice = document.getElementById('otherReplyPrice');
+            const searchReply = document.getElementById('searchReply');
+            const searchReplyBtn = document.getElementById('searchReplyBtn');
+            const replyData = document.getElementById('replyData');
+            
+            // 密码验证
+            replyPasswordBtn.addEventListener('click', function() {
+                if (replyPassword.value === USER_PASSWORD) {
+                    replyPasswordArea.style.display = 'none';
+                    replyDataArea.style.display = 'block';
+                    displayReplies();
+                } else {
+                    alert('密码错误！');
+                    replyPassword.value = '';
+                }
+            });
+            
+            // 打开回复帖子弹窗
+            openReplyModalBtn.addEventListener('click', function() {
+                // 生成回复编号
+                const now = new Date();
+                const dateStr = now.getFullYear() + 
+                               String(now.getMonth() + 1).padStart(2, '0') + 
+                               String(now.getDate()).padStart(2, '0');
+                
+                // 生成序号
+                replyCounter++;
+                if (replyCounter > 99) replyCounter = 1;
+                const seq = String(replyCounter).padStart(3, '0');
+                
+                replyNumber.value = dateStr + 'YW' + seq;
+                localStorage.setItem('replyCounter', replyCounter);
+                
+                // 设置回帖日期
+                replyDate.value = dateStr + ' ' + 
+                                String(now.getHours()).padStart(2, '0') + 
+                                ':' + 
+                                String(now.getMinutes()).padStart(2, '0');
+                
+                replyModal.classList.add('active');
+            });
+            
+            // 交易类型其他选项
+            document.querySelectorAll('input[name="replyTradeType"]').forEach(checkbox => {
+                checkbox.addEventListener('change', function() {
+                    if (this.value === '其他' && this.checked) {
+                        otherReplyTradeType.style.display = 'block';
+                    } else if (this.value === '其他' && !this.checked) {
+                        otherReplyTradeType.style.display = 'none';
+                        otherReplyTradeType.value = '';
+                    }
+                });
+            });
+            
+            // 定向人群其他选项
+            document.querySelectorAll('input[name="replyTargetGroup"]').forEach(checkbox => {
+                checkbox.addEventListener('change', function() {
+                    if (this.value === '其他' && this.checked) {
+                        otherReplyTargetGroup.style.display = 'block';
+                    } else if (this.value === '其他' && !this.checked) {
+                        otherReplyTargetGroup.style.display = 'none';
+                        otherReplyTargetGroup.value = '';
+                    }
+                });
+            });
+            
+            // 交易方式其他选项
+            document.querySelectorAll('input[name="replyTradeMethod"]').forEach(radio => {
+                radio.addEventListener('change', function() {
+                    if (this.value === '其他') {
+                        otherReplyTradeMethod.style.display = 'block';
+                    } else {
+                        otherReplyTradeMethod.style.display = 'none';
+                        otherReplyTradeMethod.value = '';
+                    }
+                });
+            });
+            
+            // 交易价格其他选项
+            document.querySelectorAll('input[name="replyPrice"]').forEach(radio => {
+                radio.addEventListener('change', function() {
+                    if (this.value === '其他') {
+                        otherReplyPrice.style.display = 'block';
+                    } else {
+                        otherReplyPrice.style.display = 'none';
+                        otherReplyPrice.value = '';
+                    }
+                });
+            });
+            
+            // 提交回复表单
+            replyForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const formData = new FormData(this);
+                const reply = {};
+                
+                for (let [key, value] of formData.entries()) {
+                    if (key === 'replyTradeType' || key === 'replyTargetGroup') {
+                        if (!reply[key]) reply[key] = [];
+                        reply[key].push(value);
+                    } else {
+                        // 移除reply前缀
+                        const newKey = key.replace('reply', '');
+                        reply[newKey.charAt(0).toLowerCase() + newKey.slice(1)] = value;
+                    }
+                }
+                
+                // 处理其他选项
+                if (otherReplyTradeType.value) {
+                    if (!reply.tradeType) reply.tradeType = [];
+                    reply.tradeType.push(otherReplyTradeType.value);
+                }
+                
+                if (otherReplyTargetGroup.value) {
+                    if (!reply.targetGroup) reply.targetGroup = [];
+                    reply.targetGroup.push(otherReplyTargetGroup.value);
+                }
+                
+                if (otherReplyTradeMethod.value) {
+                    reply.tradeMethod = otherReplyTradeMethod.value;
+                }
+                
+                if (otherReplyPrice.value) {
+                    reply.price = otherReplyPrice.value;
+                }
+                
+                // 添加ID
+                reply.id = Date.now();
+                
+                // 保存到本地存储
+                replies.push(reply);
+                localStorage.setItem('replies', JSON.stringify(replies));
+                
+                // 关闭弹窗并重置表单
+                replyModal.classList.remove('active');
+                replyForm.reset();
+                otherReplyTradeType.style.display = 'none';
+                otherReplyTargetGroup.style.display = 'none';
+                otherReplyTradeMethod.style.display = 'none';
+                otherReplyPrice.style.display = 'none';
+                
+                // 刷新回复列表
+                displayReplies();
+            });
+            
+            // 搜索功能
+            searchReplyBtn.addEventListener('click', function() {
+                displayReplies(searchReply.value);
+            });
+            
+            // 搜索框回车键
+            searchReply.addEventListener('keyup', function(e) {
+                if (e.key === 'Enter') {
+                    displayReplies(searchReply.value);
+                }
+            });
+            
+            // 显示回复数据
+            function displayReplies(searchTerm = '') {
+                let filteredReplies = replies;
+                
+                if (searchTerm) {
+                    filteredReplies = replies.filter(reply => 
+                        reply.nickname?.includes(searchTerm) || 
+                        reply.number?.includes(searchTerm) || 
+                        reply.originalPostNumber?.includes(searchTerm)
+                    );
+                }
+                
+                if (filteredReplies.length === 0) {
+                    replyData.innerHTML = '<div class="empty-data">等待发帖中</div>';
+                    return;
+                }
+                
+                let html = '<table class="data-table"><thead><tr><th>回帖编号</th><th>原帖编号</th><th>昵称</th><th>交易价格</th><th>回帖日期</th><th>操作</th></tr></thead><tbody>';
+                
+                filteredReplies.forEach(reply => {
+                    html += `
+                        <tr>
+                            <td>${reply.number || ''}</td>
+                            <td>${reply.originalPostNumber || ''}</td>
+                            <td>${reply.nickname || ''}</td>
+                            <td>${reply.price || ''}</td>
+                            <td>${reply.date || ''}</td>
+                            <td>
+                                <div class="action-buttons">
+                                    <button class="btn-edit" onclick="editReply(${reply.id})">修改</button>
+                                    <button class="btn-delete" onclick="deleteReply(${reply.id})">删除</button>
+                                </div>
+                            </td>
+                        </tr>
+                    `;
+                });
+                
+                html += '</tbody></table>';
+                replyData.innerHTML = html;
+            }
+        }
+        
+        // 初始化设置页面
+        function initSettingsPage() {
+            const settingsPasswordBtn = document.getElementById('settingsPasswordBtn');
+            const settingsPassword = document.getElementById('settingsPassword');
+            const settingsPasswordArea = document.getElementById('settingsPasswordArea');
+            const settingsArea = document.getElementById('settingsArea');
+            const logoInput = document.getElementById('logoInput');
+            const bgInput = document.getElementById('bgInput');
+            const pokeInput = document.getElementById('pokeInput');
+            
+            // 密码验证
+            settingsPasswordBtn.addEventListener('click', function() {
+                if (settingsPassword.value === ADMIN_PASSWORD) {
+                    settingsPasswordArea.style.display = 'none';
+                    settingsArea.style.display = 'block';
+                } else {
+                    alert('密码错误！');
+                    settingsPassword.value = '';
+                }
+            });
+            
+            // LOGO上传
+            document.getElementById('logoUploadArea').addEventListener('click', function() {
+                logoInput.click();
+            });
+            
+            logoInput.addEventListener('change', function(e) {
+                if (e.target.files && e.target.files[0]) {
+                    const file = e.target.files[0];
+                    const reader = new FileReader();
+                    
+                    reader.onload = function(event) {
+                        settings.logo = event.target.result;
+                        localStorage.setItem('settings', JSON.stringify(settings));
+                        loadSettings();
+                    };
+                    
+                    reader.readAsDataURL(file);
+                }
+            });
+            
+            // 背景上传
+            document.getElementById('bgUploadArea').addEventListener('click', function() {
+                bgInput.click();
+            });
+            
+            bgInput.addEventListener('change', function(e) {
+                if (e.target.files && e.target.files[0]) {
+                    const file = e.target.files[0];
+                    const reader = new FileReader();
+                    
+                    reader.onload = function(event) {
+                        settings.background = event.target.result;
+                        localStorage.setItem('settings', JSON.stringify(settings));
+                        loadSettings();
+                    };
+                    
+                    reader.readAsDataURL(file);
+                }
+            });
+            
+            // 戳戳我图片上传
+            document.getElementById('pokeUploadArea').addEventListener('click', function() {
+                pokeInput.click();
+            });
+            
+            pokeInput.addEventListener('change', function(e) {
+                if (e.target.files && e.target.files[0]) {
+                    const file = e.target.files[0];
+                    const reader = new FileReader();
+                    
+                    reader.onload = function(event) {
+                        settings.pokeImage = event.target.result;
+                        localStorage.setItem('settings', JSON.stringify(settings));
+                        loadSettings();
+                    };
+                    
+                    reader.readAsDataURL(file);
+                }
+            });
+            
+            // 删除LOGO
+            document.getElementById('deleteLogoBtn').addEventListener('click', function() {
+                if (confirm('确定要删除LOGO吗？')) {
+                    delete settings.logo;
+                    localStorage.setItem('settings', JSON.stringify(settings));
+                    loadSettings();
+                }
+            });
+            
+            // 删除背景
+            document.getElementById('deleteBgBtn').addEventListener('click', function() {
+                if (confirm('确定要删除背景图片吗？')) {
+                    delete settings.background;
+                    localStorage.setItem('settings', JSON.stringify(settings));
+                    loadSettings();
+                }
+            });
+            
+            // 删除戳戳我图片
+            document.getElementById('deletePokeBtn').addEventListener('click', function() {
+                if (confirm('确定要删除戳戳我图片吗？')) {
+                    delete settings.pokeImage;
+                    localStorage.setItem('settings', JSON.stringify(settings));
+                    loadSettings();
+                }
+            });
+        }
+        
+        // 初始化戳戳我页面
+        function initPokePage() {
+            // 图片查看功能
+            const imageModal = document.getElementById('imageModal');
+            const modalImage = document.getElementById('modalImage');
+            const closeImage = document.querySelector('.close-image');
+            
+            // 点击图片查看大图
+            document.addEventListener('click', function(e) {
+                if (e.target.id === 'pokeImage' || e.target.id === 'currentLogo' || 
+                    e.target.id === 'currentBg' || e.target.id === 'currentPoke') {
+                    modalImage.src = e.target.src;
+                    imageModal.classList.add('active');
+                }
+            });
+            
+            // 关闭图片查看
+            closeImage.addEventListener('click', function() {
+                imageModal.classList.remove('active');
+            });
+            
+            // 点击模态框背景关闭
+            imageModal.addEventListener('click', function(e) {
+                if (e.target === imageModal) {
+                    imageModal.classList.remove('active');
+                }
+            });
+        }
+        
+        // 加载设置
+        function loadSettings() {
+            // 加载LOGO
+            if (settings.logo) {
+                document.getElementById('logo-image').src = settings.logo;
+                document.getElementById('currentLogo').src = settings.logo;
+                document.getElementById('currentLogo').style.display = 'block';
+                document.getElementById('noLogo').style.display = 'none';
+                document.getElementById('changeLogoBtn').style.display = 'inline-block';
+                document.getElementById('deleteLogoBtn').style.display = 'inline-block';
+            } else {
+                document.getElementById('logo-image').src = '';
+                document.getElementById('currentLogo').src = '';
+                document.getElementById('currentLogo').style.display = 'none';
+                document.getElementById('noLogo').style.display = 'block';
+                document.getElementById('changeLogoBtn').style.display = 'none';
+                document.getElementById('deleteLogoBtn').style.display = 'none';
+            }
+            
+            // 加载背景
+            if (settings.background) {
+                document.body.style.backgroundImage = `url('${settings.background}')`;
+                document.body.style.backgroundSize = 'cover';
+                document.body.style.backgroundAttachment = 'fixed';
+                document.getElementById('currentBg').src = settings.background;
+                document.getElementById('currentBg').style.display = 'block';
+                document.getElementById('noBg').style.display = 'none';
+                document.getElementById('changeBgBtn').style.display = 'inline-block';
+                document.getElementById('deleteBgBtn').style.display = 'inline-block';
+            } else {
+                document.body.style.backgroundImage = '';
+                document.getElementById('currentBg').src = '';
+                document.getElementById('currentBg').style.display = 'none';
+                document.getElementById('noBg').style.display = 'block';
+                document.getElementById('changeBgBtn').style.display = 'none';
+                document.getElementById('deleteBgBtn').style.display = 'none';
+            }
+            
+            // 加载戳戳我图片
+            if (settings.pokeImage) {
+                document.getElementById('pokeImage').src = settings.pokeImage;
+                document.getElementById('pokeImage').style.display = 'block';
+                document.getElementById('noPokeImage').style.display = 'none';
+                document.getElementById('currentPoke').src = settings.pokeImage;
+                document.getElementById('currentPoke').style.display = 'block';
+                document.getElementById('noPoke').style.display = 'none';
+                document.getElementById('changePokeBtn').style.display = 'inline-block';
+                document.getElementById('deletePokeBtn').style.display = 'inline-block';
+            } else {
+                document.getElementById('pokeImage').src = '';
+                document.getElementById('pokeImage').style.display = 'none';
+                document.getElementById('noPokeImage').style.display = 'block';
+                document.getElementById('currentPoke').src = '';
+                document.getElementById('currentPoke').style.display = 'none';
+                document.getElementById('noPoke').style.display = 'block';
+                document.getElementById('changePokeBtn').style.display = 'none';
+                document.getElementById('deletePokeBtn').style.display = 'none';
+            }
+        }
+        
+        // 编辑账号
+        window.editAccount = function(id) {
+            const account = accounts.find(a => a.id === id);
+            if (!account) return;
+            
+            // 填充表单
+            const form = document.getElementById('accountForm');
+            form.querySelector('input[name="nickname"]').value = account.nickname || '';
+            form.querySelector('input[name="name"]').value = account.name || '';
+            form.querySelector('input[name="phone"]').value = account.phone || '';
+            form.querySelector('input[name="age"]').value = account.age || '';
+            form.querySelector('input[name="height"]').value = account.height || '';
+            form.querySelector('input[name="weight"]').value = account.weight || '';
+            
+            // 设置属性单选按钮
+            document.querySelectorAll('input[name="attribute"]').forEach(radio => {
+                radio.checked = radio.value === account.attribute;
+            });
+            
+            // 设置SM属性
+            form.querySelector('select[name="smAttribute"]').value = account.smAttribute || '';
+            
+            form.querySelector('input[name="penisLength"]').value = account.penisLength || '';
+            form.querySelector('input[name="penisGirth"]').value = account.penisGirth || '';
+            
+            // 设置特殊喜好复选框
+            document.querySelectorAll('input[name="preference"]').forEach(checkbox => {
+                checkbox.checked = Array.isArray(account.preference) && 
+                                  account.preference.includes(checkbox.value);
+            });
+            
+            // 显示弹窗
+            const modal = document.getElementById('accountModal');
+            modal.classList.add('active');
+            
+            // 修改提交逻辑
+            const submitHandler = function(e) {
+                e.preventDefault();
+                
+                // 获取表单数据
+                const formData = new FormData(form);
+                const updatedAccount = {};
+                
+                for (let [key, value] of formData.entries()) {
+                    if (key === 'preference') {
+                        if (!updatedAccount.preference) updatedAccount.preference = [];
+                        updatedAccount.preference.push(value);
+                    } else {
+                        updatedAccount[key] = value;
+                    }
+                }
+                
+                // 处理特殊喜好中的"其他"
+                const otherPreference = document.getElementById('otherPreference').value;
+                if (otherPreference) {
+                    if (!updatedAccount.preference) updatedAccount.preference = [];
+                    updatedAccount.preference.push(otherPreference);
+                }
+                
+                // 更新账号
+                const index = accounts.findIndex(a => a.id === id);
+                if (index !== -1) {
+                    accounts[index] = { ...accounts[index], ...updatedAccount };
+                    localStorage.setItem('accounts', JSON.stringify(accounts));
+                    
+                    // 刷新显示
+                    if (document.getElementById('queryDataArea').style.display !== 'none') {
+                        displayAccounts();
+                    }
+                }
+                
+                // 关闭弹窗
+                modal.classList.remove('active');
+                form.reset();
+                form.removeEventListener('submit', submitHandler);
+            };
+            
+            form.addEventListener('submit', submitHandler);
+        };
+        
+        // 删除账号
+        window.deleteAccount = function(id) {
+            if (confirm('确定要删除此账号吗？')) {
+                accounts = accounts.filter(account => account.id !== id);
+                localStorage.setItem('accounts', JSON.stringify(accounts));
+                
+                // 刷新显示
+                if (document.getElementById('queryDataArea').style.display !== 'none') {
+                    displayAccounts();
+                }
+            }
+        };
+        
+        // 编辑帖子
+        window.editPost = function(id) {
+            const post = posts.find(p => p.id === id);
+            if (!post) return;
+            
+            // 填充表单
+            const form = document.getElementById('postForm');
+            form.querySelector('input[name="postNickname"]').value = post.postNickname || '';
+            form.querySelector('input[name="postPhone"]').value = post.postPhone || '';
+            form.querySelector('input[name="postTitle"]').value = post.postTitle || '';
+            
+            // 设置交易类型复选框
+            document.querySelectorAll('input[name="tradeType"]').forEach(checkbox => {
+                checkbox.checked = Array.isArray(post.tradeType) && 
+                                  post.tradeType.includes(checkbox.value);
+            });
+            
+            // 设置定向人群复选框
+            document.querySelectorAll('input[name="targetGroup"]').forEach(checkbox => {
+                checkbox.checked = Array.isArray(post.targetGroup) && 
+                                  post.targetGroup.includes(checkbox.value);
+            });
+            
+            // 设置交易方式单选按钮
+            document.querySelectorAll('input[name="tradeMethod"]').forEach(radio => {
+                radio.checked = radio.value === post.tradeMethod;
+            });
+            
+            form.querySelector('input[name="price"]').value = post.price || '';
+            form.querySelector('textarea[name="requirements"]').value = post.requirements || '';
+            
+            // 显示弹窗
+            const modal = document.getElementById('postModal');
+            modal.classList.add('active');
+            
+            // 修改提交逻辑
+            const submitHandler = function(e) {
+                e.preventDefault();
+                
+                const formData = new FormData(form);
+                const updatedPost = {};
+                
+                for (let [key, value] of formData.entries()) {
+                    if (key === 'tradeType' || key === 'targetGroup') {
+                        if (!updatedPost[key]) updatedPost[key] = [];
+                        updatedPost[key].push(value);
+                    } else {
+                        updatedPost[key] = value;
+                    }
+                }
+                
+                // 更新帖子
+                const index = posts.findIndex(p => p.id === id);
+                if (index !== -1) {
+                    posts[index] = { ...posts[index], ...updatedPost };
+                    localStorage.setItem('posts', JSON.stringify(posts));
+                    
+                    // 刷新显示
+                    if (document.getElementById('postDataArea').style.display !== 'none') {
+                        displayPosts();
+                    }
+                }
+                
+                // 关闭弹窗
+                modal.classList.remove('active');
+                form.reset();
+                form.removeEventListener('submit', submitHandler);
+            };
+            
+            form.addEventListener('submit', submitHandler);
+        };
+        
+        // 删除帖子
+        window.deletePost = function(id) {
+            if (confirm('确定要删除此帖子吗？')) {
+                posts = posts.filter(post => post.id !== id);
+                localStorage.setItem('posts', JSON.stringify(posts));
+                
+                // 刷新显示
+                if (document.getElementById('postDataArea').style.display !== 'none') {
+                    displayPosts();
+                }
+            }
+        };
+        
+        // 编辑回复
+        window.editReply = function(id) {
+            const reply = replies.find(r => r.id === id);
+            if (!reply) return;
+            
+            // 填充表单
+            const form = document.getElementById('replyForm');
+            form.querySelector('input[name="originalPostNumber"]').value = reply.originalPostNumber || '';
+            form.querySelector('input[name="replyNickname"]').value = reply.nickname || '';
+            form.querySelector('input[name="replyPhone"]').value = reply.phone || '';
+            
+            // 设置交易类型复选框
+            document.querySelectorAll('input[name="replyTradeType"]').forEach(checkbox => {
+                checkbox.checked = Array.isArray(reply.tradeType) && 
+                                  reply.tradeType.includes(checkbox.value);
+            });
+            
+            // 设置定向人群复选框
+            document.querySelectorAll('input[name="replyTargetGroup"]').forEach(checkbox => {
+                checkbox.checked = Array.isArray(reply.targetGroup) && 
+                                  reply.targetGroup.includes(checkbox.value);
+            });
+            
+            // 设置交易方式单选按钮
+            document.querySelectorAll('input[name="replyTradeMethod"]').forEach(radio => {
+                radio.checked = radio.value === reply.tradeMethod;
+            });
+            
+            // 设置交易价格单选按钮
+            document.querySelectorAll('input[name="replyPrice"]').forEach(radio => {
+                radio.checked = radio.value === reply.price;
+            });
+            
+            form.querySelector('textarea[name="replyNote"]').value = reply.note || '';
+            
+            // 显示弹窗
+            const modal = document.getElementById('replyModal');
+            modal.classList.add('active');
+            
+            // 修改提交逻辑
+            const submitHandler = function(e) {
+                e.preventDefault();
+                
+                const formData = new FormData(form);
+                const updatedReply = {};
+                
+                for (let [key, value] of formData.entries()) {
+                    if (key === 'replyTradeType' || key === 'replyTargetGroup') {
+                        if (!updatedReply[key]) updatedReply[key] = [];
+                        updatedReply[key].push(value);
+                    } else {
+                        // 移除reply前缀
+                        const newKey = key.replace('reply', '');
+                        updatedReply[newKey.charAt(0).toLowerCase() + newKey.slice(1)] = value;
+                    }
+                }
+                
+                // 更新回复
+                const index = replies.findIndex(r => r.id === id);
+                if (index !== -1) {
+                    replies[index] = { ...replies[index], ...updatedReply };
+                    localStorage.setItem('replies', JSON.stringify(replies));
+                    
+                    // 刷新显示
+                    if (document.getElementById('replyDataArea').style.display !== 'none') {
+                        displayReplies();
+                    }
+                }
+                
+                // 关闭弹窗
+                modal.classList.remove('active');
+                form.reset();
+                form.removeEventListener('submit', submitHandler);
+            };
+            
+            form.addEventListener('submit', submitHandler);
+        };
+        
+        // 删除回复
+        window.deleteReply = function(id) {
+            if (confirm('确定要删除此回复吗？')) {
+                replies = replies.filter(reply => reply.id !== id);
+                localStorage.setItem('replies', JSON.stringify(replies));
+                
+                // 刷新显示
+                if (document.getElementById('replyDataArea').style.display !== 'none') {
+                    displayReplies();
+                }
+            }
+        };
+    </script>
+</body>
+</html>
