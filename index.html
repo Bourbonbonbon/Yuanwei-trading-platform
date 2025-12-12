@@ -1,1 +1,1345 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>原味交易平台</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            min-height: 100vh;
+        }
+        
+        .custom-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-size: cover;
+            background-position: center;
+            z-index: -1;
+        }
+        
+        .header {
+            display: flex;
+            align-items: center;
+            padding: 15px 20px;
+            background-color: rgba(255, 255, 255, 0.9);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        .logo {
+            width: 75px;
+            height: 75px;
+            margin-right: 15px;
+            cursor: pointer;
+            object-fit: cover;
+        }
+        
+        .logo-modal, .image-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+        
+        .logo-modal img, .image-modal img {
+            max-width: 90%;
+            max-height: 90%;
+        }
+        
+        .logo-modal.show, .image-modal.show {
+            display: flex;
+        }
+        
+        .title {
+            font-size: 24px;
+            font-weight: bold;
+        }
+        
+        .tabs {
+            display: flex;
+            background-color: rgba(255, 255, 255, 0.9);
+            border-bottom: 1px solid #ddd;
+        }
+        
+        .tab {
+            padding: 15px 20px;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s;
+        }
+        
+        .tab:hover {
+            background-color: #f0f0f0;
+        }
+        
+        .tab.active {
+            border-bottom-color: #4CAF50;
+            background-color: #f9f9f9;
+        }
+        
+        .content {
+            padding: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .tab-content {
+            display: none;
+            background-color: white;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 100;
+        }
+        
+        .modal.show {
+            display: flex;
+        }
+        
+        .modal-content {
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            max-width: 500px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+        
+        .form-group {
+            margin-bottom: 15px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        
+        input, select, textarea {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        
+        .checkbox-group, .radio-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 5px;
+        }
+        
+        .checkbox-item, .radio-item {
+            display: flex;
+            align-items: center;
+        }
+        
+        .checkbox-item input, .radio-item input {
+            width: auto;
+            margin-right: 5px;
+        }
+        
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        
+        button:hover {
+            background-color: #45a049;
+        }
+        
+        .btn-secondary {
+            background-color: #f0f0f0;
+            color: #333;
+            margin-left: 10px;
+        }
+        
+        .btn-danger {
+            background-color: #f44336;
+        }
+        
+        .btn-small {
+            padding: 5px 10px;
+            font-size: 14px;
+        }
+        
+        .password-prompt {
+            text-align: center;
+            padding: 40px 20px;
+        }
+        
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        
+        .data-table th, .data-table td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }
+        
+        .data-table th {
+            background-color: #f5f5f5;
+        }
+        
+        .data-table tr:hover {
+            background-color: #f9f9f9;
+        }
+        
+        .no-data {
+            text-align: center;
+            padding: 40px;
+            color: #666;
+            font-size: 18px;
+        }
+        
+        .search-box {
+            margin-bottom: 20px;
+            display: flex;
+        }
+        
+        .search-box input {
+            flex: 1;
+            margin-right: 10px;
+        }
+        
+        .message {
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 4px;
+            text-align: center;
+        }
+        
+        .success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        
+        .upload-area {
+            border: 2px dashed #ddd;
+            padding: 30px;
+            text-align: center;
+            margin-bottom: 20px;
+            cursor: pointer;
+        }
+        
+        .upload-area:hover {
+            border-color: #4CAF50;
+        }
+        
+        .uploaded-image {
+            max-width: 200px;
+            max-height: 200px;
+            margin: 10px 0;
+        }
+        
+        .poked-image {
+            display: block;
+            max-width: 500px;
+            max-height: 500px;
+            margin: 0 auto;
+            cursor: pointer;
+        }
+        
+        .actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <!-- 背景图片 -->
+    <div class="custom-bg" id="pageBackground"></div>
+    
+    <!-- Logo放大查看 -->
+    <div class="logo-modal" id="logoModal">
+        <img id="modalLogo" src="" alt="Logo放大查看">
+    </div>
+    
+    <!-- 戳戳我图片放大查看 -->
+    <div class="image-modal" id="imageModal">
+        <img id="modalImage" src="" alt="图片放大查看">
+    </div>
+    
+    <!-- 页面头部 -->
+    <div class="header">
+        <img class="logo" id="pageLogo" src="" alt="LOGO" onclick="showLogoModal()">
+        <div class="title">原味交易平台</div>
+    </div>
+    
+    <!-- 标签页导航 -->
+    <div class="tabs">
+        <div class="tab active" data-tab="account-info">账号信息</div>
+        <div class="tab" data-tab="account-query">账号信息查询</div>
+        <div class="tab" data-tab="post-publish">发布帖子</div>
+        <div class="tab" data-tab="post-reply">回复帖子</div>
+        <div class="tab" data-tab="settings">设置</div>
+        <div class="tab" data-tab="poke-me">戳戳我</div>
+    </div>
+    
+    <!-- 主要内容区域 -->
+    <div class="content">
+        <!-- 账号信息标签页 -->
+        <div class="tab-content active" id="account-info">
+            <h2>账号信息</h2>
+            <p>点击下方按钮申请账号</p>
+            <button onclick="showAccountModal()">申请账号</button>
+            
+            <!-- 账号申请弹窗 -->
+            <div class="modal" id="accountModal">
+                <div class="modal-content">
+                    <h3>账号申请</h3>
+                    <form id="accountForm">
+                        <div class="form-group">
+                            <label>昵称：</label>
+                            <input type="text" name="nickname" required>
+                        </div>
+                        <div class="form-group">
+                            <label>名称：</label>
+                            <input type="text" name="name" required>
+                        </div>
+                        <div class="form-group">
+                            <label>手机尾号：</label>
+                            <input type="text" name="phoneSuffix" maxlength="4" required>
+                        </div>
+                        <div class="form-group">
+                            <label>年龄：</label>
+                            <input type="number" name="age" min="18" max="100" required>
+                        </div>
+                        <div class="form-group">
+                            <label>身高（厘米）：</label>
+                            <input type="number" name="height" min="100" max="250" required>
+                        </div>
+                        <div class="form-group">
+                            <label>体重（公斤）：</label>
+                            <input type="number" name="weight" min="30" max="200" step="0.1" required>
+                        </div>
+                        <div class="form-group">
+                            <label>属性：</label>
+                            <select name="attribute" required>
+                                <option value="">请选择</option>
+                                <option value="1">1</option>
+                                <option value="0">0</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>SM属性：</label>
+                            <select name="smAttribute" required>
+                                <option value="">请选择</option>
+                                <option value="S">S</option>
+                                <option value="M">M</option>
+                                <option value="Sub">Sub</option>
+                                <option value="Dom">Dom</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>屌长（厘米）：</label>
+                            <input type="number" name="length" min="0" max="30" step="0.1">
+                        </div>
+                        <div class="form-group">
+                            <label>屌粗（厘米）：</label>
+                            <input type="number" name="thickness" min="0" max="20" step="0.1">
+                        </div>
+                        <div class="form-group">
+                            <label>特殊喜好：</label>
+                            <input type="text" name="preference" placeholder="原味/圣水/捆绑等">
+                        </div>
+                        <div class="actions">
+                            <button type="submit">提交</button>
+                            <button type="button" class="btn-secondary" onclick="hideAccountModal()">取消</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 账号信息查询标签页 -->
+        <div class="tab-content" id="account-query">
+            <h2>账号信息查询</h2>
+            <div class="password-prompt" id="accountQueryPrompt">
+                <p>请输入管理密码</p>
+                <input type="password" id="accountQueryPassword">
+                <button onclick="checkAccountQueryPassword()">提交</button>
+            </div>
+            <div id="accountQueryContent" style="display: none;">
+                <div class="search-box">
+                    <input type="text" id="accountSearch" placeholder="搜索昵称或名称...">
+                    <button onclick="searchAccounts()">搜索</button>
+                </div>
+                <div id="accountData">
+                    <!-- 账号数据将通过JS动态生成 -->
+                </div>
+            </div>
+        </div>
+        
+        <!-- 发布帖子标签页 -->
+        <div class="tab-content" id="post-publish">
+            <h2>发布帖子</h2>
+            <div class="password-prompt" id="postPublishPrompt">
+                <p>请输入用户密码</p>
+                <input type="password" id="postPublishPassword">
+                <button onclick="checkPostPublishPassword()">提交</button>
+            </div>
+            <div id="postPublishContent" style="display: none;">
+                <button onclick="showPostModal()">发布新帖子</button>
+                
+                <!-- 发布帖子弹窗 -->
+                <div class="modal" id="postModal">
+                    <div class="modal-content">
+                        <h3>发布新帖子</h3>
+                        <form id="postForm">
+                            <div class="form-group">
+                                <label>昵称：</label>
+                                <input type="text" name="nickname" required>
+                            </div>
+                            <div class="form-group">
+                                <label>手机尾号：</label>
+                                <input type="text" name="phoneSuffix" maxlength="4" required>
+                            </div>
+                            <div class="form-group">
+                                <label>帖子标题：</label>
+                                <input type="text" name="title" required>
+                            </div>
+                            <div class="form-group">
+                                <label>交易类型：</label>
+                                <div class="checkbox-group" id="tradeTypeGroup">
+                                    <div class="checkbox-item">
+                                        <input type="checkbox" name="tradeType" value="袜子" onchange="toggleOtherInput('tradeTypeOther', this)"> 袜子
+                                    </div>
+                                    <div class="checkbox-item">
+                                        <input type="checkbox" name="tradeType" value="内裤" onchange="toggleOtherInput('tradeTypeOther', this)"> 内裤
+                                    </div>
+                                    <div class="checkbox-item">
+                                        <input type="checkbox" name="tradeType" value="鞋" onchange="toggleOtherInput('tradeTypeOther', this)"> 鞋
+                                    </div>
+                                    <div class="checkbox-item">
+                                        <input type="checkbox" name="tradeType" value="其他" onchange="toggleOtherInput('tradeTypeOther', this)"> 其他
+                                    </div>
+                                </div>
+                                <div id="tradeTypeOtherContainer" style="display: none; margin-top: 10px;">
+                                    <input type="text" id="tradeTypeOther" placeholder="请填写其他交易类型">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>定向人群：</label>
+                                <div class="checkbox-group" id="targetGroup">
+                                    <div class="checkbox-item">
+                                        <input type="checkbox" name="target" value="军" onchange="toggleOtherInput('targetOther', this)"> 军
+                                    </div>
+                                    <div class="checkbox-item">
+                                        <input type="checkbox" name="target" value="警" onchange="toggleOtherInput('targetOther', this)"> 警
+                                    </div>
+                                    <div class="checkbox-item">
+                                        <input type="checkbox" name="target" value="消" onchange="toggleOtherInput('targetOther', this)"> 消
+                                    </div>
+                                    <div class="checkbox-item">
+                                        <input type="checkbox" name="target" value="保安" onchange="toggleOtherInput('targetOther', this)"> 保安
+                                    </div>
+                                    <div class="checkbox-item">
+                                        <input type="checkbox" name="target" value="民工" onchange="toggleOtherInput('targetOther', this)"> 民工
+                                    </div>
+                                    <div class="checkbox-item">
+                                        <input type="checkbox" name="target" value="其他" onchange="toggleOtherInput('targetOther', this)"> 其他
+                                    </div>
+                                </div>
+                                <div id="targetOtherContainer" style="display: none; margin-top: 10px;">
+                                    <input type="text" id="targetOther" placeholder="请填写其他定向人群">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>交易方式：</label>
+                                <div class="radio-group" id="tradeMethodGroup">
+                                    <div class="radio-item">
+                                        <input type="radio" name="tradeMethod" value="快递" onchange="toggleOtherInput('tradeMethodOther', this)"> 快递
+                                    </div>
+                                    <div class="radio-item">
+                                        <input type="radio" name="tradeMethod" value="面交" onchange="toggleOtherInput('tradeMethodOther', this)"> 面交
+                                    </div>
+                                    <div class="radio-item">
+                                        <input type="radio" name="tradeMethod" value="其他" onchange="toggleOtherInput('tradeMethodOther', this)"> 其他
+                                    </div>
+                                </div>
+                                <div id="tradeMethodOtherContainer" style="display: none; margin-top: 10px;">
+                                    <input type="text" id="tradeMethodOther" placeholder="请填写其他交易方式">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>交易价格（元）：</label>
+                                <input type="number" name="price" min="0" step="0.01" required>
+                            </div>
+                            <div class="form-group">
+                                <label>要求：</label>
+                                <textarea name="requirements" rows="3"></textarea>
+                            </div>
+                            <div class="actions">
+                                <button type="submit">发布</button>
+                                <button type="button" class="btn-secondary" onclick="hidePostModal()">取消</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                
+                <div class="search-box" style="margin-top: 20px;">
+                    <input type="text" id="postSearch" placeholder="搜索帖子标题或昵称...">
+                    <button onclick="searchPosts()">搜索</button>
+                </div>
+                <div id="postData">
+                    <!-- 帖子数据将通过JS动态生成 -->
+                </div>
+            </div>
+        </div>
+        
+        <!-- 回复帖子标签页 -->
+        <div class="tab-content" id="post-reply">
+            <h2>回复帖子</h2>
+            <div class="password-prompt" id="postReplyPrompt">
+                <p>请输入用户密码</p>
+                <input type="password" id="postReplyPassword">
+                <button onclick="checkPostReplyPassword()">提交</button>
+            </div>
+            <div id="postReplyContent" style="display: none;">
+                <button onclick="showReplyModal()">回复帖子</button>
+                
+                <!-- 回复帖子弹窗 -->
+                <div class="modal" id="replyModal">
+                    <div class="modal-content">
+                        <h3>回复帖子</h3>
+                        <form id="replyForm">
+                            <div class="form-group">
+                                <label>原帖编号：</label>
+                                <input type="text" name="originalId" required>
+                            </div>
+                            <div class="form-group">
+                                <label>昵称：</label>
+                                <input type="text" name="nickname" required>
+                            </div>
+                            <div class="form-group">
+                                <label>手机尾号：</label>
+                                <input type="text" name="phoneSuffix" maxlength="4" required>
+                            </div>
+                            <div class="form-group">
+                                <label>备注：</label>
+                                <textarea name="remark" rows="3"></textarea>
+                            </div>
+                            <div class="actions">
+                                <button type="submit">提交回复</button>
+                                <button type="button" class="btn-secondary" onclick="hideReplyModal()">取消</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                
+                <div class="search-box" style="margin-top: 20px;">
+                    <input type="text" id="replySearch" placeholder="搜索原帖编号或昵称...">
+                    <button onclick="searchReplies()">搜索</button>
+                </div>
+                <div id="replyData">
+                    <!-- 回复数据将通过JS动态生成 -->
+                </div>
+            </div>
+        </div>
+        
+        <!-- 设置标签页 -->
+        <div class="tab-content" id="settings">
+            <h2>设置</h2>
+            <div class="password-prompt" id="settingsPrompt">
+                <p>请输入管理密码</p>
+                <input type="password" id="settingsPassword">
+                <button onclick="checkSettingsPassword()">提交</button>
+            </div>
+            <div id="settingsContent" style="display: none;">
+                <h3>LOGO设置</h3>
+                <div class="upload-area" onclick="document.getElementById('logoUpload').click()">
+                    <p>点击上传LOGO图片</p>
+                    <p>支持格式: JPG, JPEG, PNG | 建议尺寸: 75x75px</p>
+                    <input type="file" id="logoUpload" accept=".jpg,.jpeg,.png" style="display: none;" onchange="uploadLogo()">
+                </div>
+                <div id="logoPreview">
+                    <!-- LOGO预览将通过JS动态生成 -->
+                </div>
+                
+                <h3 style="margin-top: 30px;">背景设置</h3>
+                <div class="upload-area" onclick="document.getElementById('bgUpload').click()">
+                    <p>点击上传背景图片</p>
+                    <p>支持格式: JPG, JPEG, PNG</p>
+                    <input type="file" id="bgUpload" accept=".jpg,.jpeg,.png" style="display: none;" onchange="uploadBackground()">
+                </div>
+                <div id="bgPreview">
+                    <!-- 背景预览将通过JS动态生成 -->
+                </div>
+                
+                <h3 style="margin-top: 30px;">戳戳我图片设置</h3>
+                <div class="upload-area" onclick="document.getElementById('pokeUpload').click()">
+                    <p>点击上传戳戳我图片</p>
+                    <p>支持格式: JPG, JPEG, PNG</p>
+                    <input type="file" id="pokeUpload" accept=".jpg,.jpeg,.png" style="display: none;" onchange="uploadPokeImage()">
+                </div>
+                <div id="pokePreview">
+                    <!-- 戳戳我图片预览将通过JS动态生成 -->
+                </div>
+            </div>
+        </div>
+        
+        <!-- 戳戳我标签页 -->
+        <div class="tab-content" id="poke-me">
+            <h2>戳戳我</h2>
+            <div id="pokeImageContainer">
+                <!-- 戳戳我图片将通过JS动态生成 -->
+            </div>
+        </div>
+    </div>
 
+    <script>
+        // 存储当前激活的标签页
+        let activeTab = localStorage.getItem('activeTab') || 'account-info';
+        
+        // 密码常量
+        const ADMIN_PASSWORD = '740302';
+        const USER_PASSWORD = '000000';
+        
+        // 数据存储
+        let accounts = JSON.parse(localStorage.getItem('accounts')) || [];
+        let posts = JSON.parse(localStorage.getItem('posts')) || [];
+        let replies = JSON.parse(localStorage.getItem('replies')) || [];
+        let settings = JSON.parse(localStorage.getItem('settings')) || {
+            logo: '',
+            background: '',
+            pokeImage: ''
+        };
+        
+        // 页面加载时初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            // 设置当前激活的标签页
+            setActiveTab(activeTab);
+            
+            // 加载设置
+            loadSettings();
+            
+            // 绑定标签页点击事件
+            document.querySelectorAll('.tab').forEach(tab => {
+                tab.addEventListener('click', function() {
+                    const tabId = this.getAttribute('data-tab');
+                    setActiveTab(tabId);
+                });
+            });
+            
+            // 绑定表单提交事件
+            document.getElementById('accountForm').addEventListener('submit', handleAccountSubmit);
+            document.getElementById('postForm').addEventListener('submit', handlePostSubmit);
+            document.getElementById('replyForm').addEventListener('submit', handleReplySubmit);
+            
+            // 加载数据
+            loadAccountData();
+            loadPostData();
+            loadReplyData();
+        });
+        
+        // 设置激活的标签页
+        function setActiveTab(tabId) {
+            // 更新标签页状态
+            document.querySelectorAll('.tab').forEach(tab => {
+                if (tab.getAttribute('data-tab') === tabId) {
+                    tab.classList.add('active');
+                } else {
+                    tab.classList.remove('active');
+                }
+            });
+            
+            // 更新内容区域
+            document.querySelectorAll('.tab-content').forEach(content => {
+                if (content.id === tabId) {
+                    content.classList.add('active');
+                } else {
+                    content.classList.remove('active');
+                }
+            });
+            
+            // 保存到本地存储
+            localStorage.setItem('activeTab', tabId);
+            activeTab = tabId;
+            
+            // 如果是戳戳我标签，加载图片
+            if (tabId === 'poke-me') {
+                loadPokeImage();
+            }
+        }
+        
+        // 账号申请弹窗显示/隐藏
+        function showAccountModal() {
+            document.getElementById('accountModal').classList.add('show');
+        }
+        
+        function hideAccountModal() {
+            document.getElementById('accountModal').classList.remove('show');
+        }
+        
+        // 处理账号申请提交
+        function handleAccountSubmit(e) {
+            e.preventDefault();
+            
+            const formData = new FormData(e.target);
+            const account = {
+                id: Date.now(),
+                nickname: formData.get('nickname'),
+                name: formData.get('name'),
+                phoneSuffix: formData.get('phoneSuffix'),
+                age: formData.get('age'),
+                height: formData.get('height'),
+                weight: formData.get('weight'),
+                attribute: formData.get('attribute'),
+                smAttribute: formData.get('smAttribute'),
+                length: formData.get('length'),
+                thickness: formData.get('thickness'),
+                preference: formData.get('preference'),
+                date: new Date().toLocaleString()
+            };
+            
+            accounts.push(account);
+            localStorage.setItem('accounts', JSON.stringify(accounts));
+            
+            // 显示密码提示
+            const modalContent = document.querySelector('#accountModal .modal-content');
+            modalContent.innerHTML = `
+                <div class="message success">
+                    <h3>账号申请成功！</h3>
+                    <p>用户密码为: 000000</p>
+                </div>
+            `;
+            
+            // 5秒后恢复表单
+            setTimeout(() => {
+                modalContent.innerHTML = `
+                    <h3>账号申请</h3>
+                    <form id="accountForm">
+                        <div class="form-group">
+                            <label>昵称：</label>
+                            <input type="text" name="nickname" required>
+                        </div>
+                        <div class="form-group">
+                            <label>名称：</label>
+                            <input type="text" name="name" required>
+                        </div>
+                        <div class="form-group">
+                            <label>手机尾号：</label>
+                            <input type="text" name="phoneSuffix" maxlength="4" required>
+                        </div>
+                        <div class="form-group">
+                            <label>年龄：</label>
+                            <input type="number" name="age" min="18" max="100" required>
+                        </div>
+                        <div class="form-group">
+                            <label>身高（厘米）：</label>
+                            <input type="number" name="height" min="100" max="250" required>
+                        </div>
+                        <div class="form-group">
+                            <label>体重（公斤）：</label>
+                            <input type="number" name="weight" min="30" max="200" step="0.1" required>
+                        </div>
+                        <div class="form-group">
+                            <label>属性：</label>
+                            <select name="attribute" required>
+                                <option value="">请选择</option>
+                                <option value="1">1</option>
+                                <option value="0">0</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>SM属性：</label>
+                            <select name="smAttribute" required>
+                                <option value="">请选择</option>
+                                <option value="S">S</option>
+                                <option value="M">M</option>
+                                <option value="Sub">Sub</option>
+                                <option value="Dom">Dom</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>屌长（厘米）：</label>
+                            <input type="number" name="length" min="0" max="30" step="0.1">
+                        </div>
+                        <div class="form-group">
+                            <label>屌粗（厘米）：</label>
+                            <input type="number" name="thickness" min="0" max="20" step="0.1">
+                        </div>
+                        <div class="form-group">
+                            <label>特殊喜好：</label>
+                            <input type="text" name="preference" placeholder="原味/圣水/捆绑等">
+                        </div>
+                        <div class="actions">
+                            <button type="submit">提交</button>
+                            <button type="button" class="btn-secondary" onclick="hideAccountModal()">取消</button>
+                        </div>
+                    </form>
+                `;
+                
+                // 重新绑定事件
+                document.getElementById('accountForm').addEventListener('submit', handleAccountSubmit);
+                
+                hideAccountModal();
+            }, 5000);
+        }
+        
+        // 密码检查函数
+        function checkAccountQueryPassword() {
+            const password = document.getElementById('accountQueryPassword').value;
+            if (password === ADMIN_PASSWORD) {
+                document.getElementById('accountQueryPrompt').style.display = 'none';
+                document.getElementById('accountQueryContent').style.display = 'block';
+                loadAccountData();
+            } else {
+                alert('密码错误！');
+            }
+        }
+        
+        function checkPostPublishPassword() {
+            const password = document.getElementById('postPublishPassword').value;
+            if (password === USER_PASSWORD) {
+                document.getElementById('postPublishPrompt').style.display = 'none';
+                document.getElementById('postPublishContent').style.display = 'block';
+                loadPostData();
+            } else {
+                alert('密码错误！');
+            }
+        }
+        
+        function checkPostReplyPassword() {
+            const password = document.getElementById('postReplyPassword').value;
+            if (password === USER_PASSWORD) {
+                document.getElementById('postReplyPrompt').style.display = 'none';
+                document.getElementById('postReplyContent').style.display = 'block';
+                loadReplyData();
+            } else {
+                alert('密码错误！');
+            }
+        }
+        
+        function checkSettingsPassword() {
+            const password = document.getElementById('settingsPassword').value;
+            if (password === ADMIN_PASSWORD) {
+                document.getElementById('settingsPrompt').style.display = 'none';
+                document.getElementById('settingsContent').style.display = 'block';
+                loadSettingsPreview();
+            } else {
+                alert('密码错误！');
+            }
+        }
+        
+        // 加载账号数据
+        function loadAccountData(filter = '') {
+            const container = document.getElementById('accountData');
+            let filteredAccounts = accounts;
+            
+            if (filter) {
+                filteredAccounts = accounts.filter(account => 
+                    account.nickname.includes(filter) || 
+                    account.name.includes(filter)
+                );
+            }
+            
+            if (filteredAccounts.length === 0) {
+                container.innerHTML = '<div class="no-data">等待数据上传</div>';
+                return;
+            }
+            
+            let html = '<table class="data-table"><thead><tr><th>昵称</th><th>名称</th><th>年龄</th><th>身高(cm)</th><th>体重(kg)</th><th>属性</th><th>SM属性</th><th>操作</th></tr></thead><tbody>';
+            
+            filteredAccounts.forEach(account => {
+                html += `
+                    <tr>
+                        <td>${account.nickname}</td>
+                        <td>${account.name}</td>
+                        <td>${account.age}</td>
+                        <td>${account.height}</td>
+                        <td>${account.weight}</td>
+                        <td>${account.attribute}</td>
+                        <td>${account.smAttribute}</td>
+                        <td>
+                            <button class="btn-small" onclick="editAccount(${account.id})">修改</button>
+                            <button class="btn-small btn-danger" onclick="deleteAccount(${account.id})">删除</button>
+                        </td>
+                    </tr>
+                `;
+            });
+            
+            html += '</tbody></table>';
+            container.innerHTML = html;
+        }
+        
+        // 搜索账号
+        function searchAccounts() {
+            const filter = document.getElementById('accountSearch').value;
+            loadAccountData(filter);
+        }
+        
+        // 编辑账号
+        function editAccount(id) {
+            const account = accounts.find(acc => acc.id === id);
+            if (account) {
+                // 这里可以添加编辑功能
+                alert('编辑功能开发中...');
+            }
+        }
+        
+        // 删除账号
+        function deleteAccount(id) {
+            if (confirm('确定删除此账号吗？')) {
+                accounts = accounts.filter(acc => acc.id !== id);
+                localStorage.setItem('accounts', JSON.stringify(accounts));
+                loadAccountData();
+            }
+        }
+        
+        // 发布帖子弹窗显示/隐藏
+        function showPostModal() {
+            document.getElementById('postModal').classList.add('show');
+        }
+        
+        function hidePostModal() {
+            document.getElementById('postModal').classList.remove('show');
+        }
+        
+        // 切换其他输入框显示
+        function toggleOtherInput(otherInputId, element) {
+            const container = document.getElementById(otherInputId + 'Container');
+            if (element.value === '其他' && element.checked) {
+                container.style.display = 'block';
+            } else {
+                // 检查是否还有其他"其他"选项被选中
+                const otherChecked = Array.from(document.querySelectorAll(`input[type="checkbox"][value="其他"], input[type="radio"][value="其他"]`))
+                    .some(input => input.checked && input.name === element.name);
+                
+                if (!otherChecked) {
+                    container.style.display = 'none';
+                }
+            }
+        }
+        
+        // 生成发帖编号
+        function generatePostId() {
+            const now = new Date();
+            const dateStr = now.getFullYear() + 
+                          String(now.getMonth() + 1).padStart(2, '0') + 
+                          String(now.getDate()).padStart(2, '0');
+            
+            // 查找当天的帖子数量
+            const todayPosts = posts.filter(post => post.id.startsWith(dateStr));
+            const count = todayPosts.length + 1;
+            
+            return dateStr + String(count).padStart(3, '0');
+        }
+        
+        // 处理发布帖子提交
+        function handlePostSubmit(e) {
+            e.preventDefault();
+            
+            const formData = new FormData(e.target);
+            const tradeTypes = [];
+            const targets = [];
+            
+            // 收集交易类型
+            document.querySelectorAll('#tradeTypeGroup input[name="tradeType"]:checked').forEach(checkbox => {
+                if (checkbox.value === '其他') {
+                    const otherValue = document.getElementById('tradeTypeOther').value;
+                    if (otherValue) tradeTypes.push(otherValue);
+                } else {
+                    tradeTypes.push(checkbox.value);
+                }
+            });
+            
+            // 收集定向人群
+            document.querySelectorAll('#targetGroup input[name="target"]:checked').forEach(checkbox => {
+                if (checkbox.value === '其他') {
+                    const otherValue = document.getElementById('targetOther').value;
+                    if (otherValue) targets.push(otherValue);
+                } else {
+                    targets.push(checkbox.value);
+                }
+            });
+            
+            // 获取交易方式
+            let tradeMethod = document.querySelector('#tradeMethodGroup input[name="tradeMethod"]:checked')?.value;
+            if (tradeMethod === '其他') {
+                tradeMethod = document.getElementById('tradeMethodOther').value;
+            }
+            
+            const post = {
+                id: generatePostId(),
+                nickname: formData.get('nickname'),
+                phoneSuffix: formData.get('phoneSuffix'),
+                title: formData.get('title'),
+                date: new Date().toLocaleString('zh-CN', {year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit'}).replace(/\//g, ''),
+                tradeTypes: tradeTypes,
+                targets: targets,
+                tradeMethod: tradeMethod,
+                price: formData.get('price'),
+                requirements: formData.get('requirements'),
+                publishDate: new Date().toLocaleString()
+            };
+            
+            posts.push(post);
+            localStorage.setItem('posts', JSON.stringify(posts));
+            
+            hidePostModal();
+            loadPostData();
+            e.target.reset();
+            
+            // 重置其他输入框
+            ['tradeTypeOther', 'targetOther', 'tradeMethodOther'].forEach(id => {
+                document.getElementById(id + 'Container').style.display = 'none';
+            });
+        }
+        
+        // 加载帖子数据
+        function loadPostData(filter = '') {
+            const container = document.getElementById('postData');
+            let filteredPosts = posts;
+            
+            if (filter) {
+                filteredPosts = posts.filter(post => 
+                    post.title.includes(filter) || 
+                    post.nickname.includes(filter)
+                );
+            }
+            
+            if (filteredPosts.length === 0) {
+                container.innerHTML = '<div class="no-data">等待发帖中</div>';
+                return;
+            }
+            
+            let html = '<table class="data-table"><thead><tr><th>发帖编号</th><th>昵称</th><th>帖子标题</th><th>发布日期</th><th>交易类型</th><th>操作</th></tr></thead><tbody>';
+            
+            filteredPosts.forEach(post => {
+                html += `
+                    <tr>
+                        <td>${post.id}</td>
+                        <td>${post.nickname}</td>
+                        <td>${post.title}</td>
+                        <td>${post.publishDate}</td>
+                        <td>${post.tradeTypes.join(', ')}</td>
+                        <td>
+                            <button class="btn-small" onclick="editPost('${post.id}')">修改</button>
+                            <button class="btn-small btn-danger" onclick="deletePost('${post.id}')">删除</button>
+                        </td>
+                    </tr>
+                `;
+            });
+            
+            html += '</tbody></table>';
+            container.innerHTML = html;
+        }
+        
+        // 搜索帖子
+        function searchPosts() {
+            const filter = document.getElementById('postSearch').value;
+            loadPostData(filter);
+        }
+        
+        // 编辑帖子
+        function editPost(id) {
+            const post = posts.find(p => p.id === id);
+            if (post) {
+                alert('编辑功能开发中...');
+            }
+        }
+        
+        // 删除帖子
+        function deletePost(id) {
+            if (confirm('确定删除此帖子吗？')) {
+                posts = posts.filter(p => p.id !== id);
+                localStorage.setItem('posts', JSON.stringify(posts));
+                loadPostData();
+            }
+        }
+        
+        // 回复帖子弹窗显示/隐藏
+        function showReplyModal() {
+            document.getElementById('replyModal').classList.add('show');
+        }
+        
+        function hideReplyModal() {
+            document.getElementById('replyModal').classList.remove('show');
+        }
+        
+        // 处理回复帖子提交
+        function handleReplySubmit(e) {
+            e.preventDefault();
+            
+            const formData = new FormData(e.target);
+            const reply = {
+                id: generatePostId(),
+                originalId: formData.get('originalId'),
+                nickname: formData.get('nickname'),
+                phoneSuffix: formData.get('phoneSuffix'),
+                date: new Date().toLocaleString('zh-CN', {year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit'}).replace(/\//g, ''),
+                remark: formData.get('remark'),
+                replyDate: new Date().toLocaleString()
+            };
+            
+            replies.push(reply);
+            localStorage.setItem('replies', JSON.stringify(replies));
+            
+            hideReplyModal();
+            loadReplyData();
+            e.target.reset();
+        }
+        
+        // 加载回复数据
+        function loadReplyData(filter = '') {
+            const container = document.getElementById('replyData');
+            let filteredReplies = replies;
+            
+            if (filter) {
+                filteredReplies = replies.filter(reply => 
+                    reply.originalId.includes(filter) || 
+                    reply.nickname.includes(filter)
+                );
+            }
+            
+            if (filteredReplies.length === 0) {
+                container.innerHTML = '<div class="no-data">等待发帖中</div>';
+                return;
+            }
+            
+            let html = '<table class="data-table"><thead><tr><th>回帖编号</th><th>原帖编号</th><th>昵称</th><th>回帖日期</th><th>操作</th></tr></thead><tbody>';
+            
+            filteredReplies.forEach(reply => {
+                html += `
+                    <tr>
+                        <td>${reply.id}</td>
+                        <td>${reply.originalId}</td>
+                        <td>${reply.nickname}</td>
+                        <td>${reply.replyDate}</td>
+                        <td>
+                            <button class="btn-small" onclick="editReply('${reply.id}')">修改</button>
+                            <button class="btn-small btn-danger" onclick="deleteReply('${reply.id}')">删除</button>
+                        </td>
+                    </tr>
+                `;
+            });
+            
+            html += '</tbody></table>';
+            container.innerHTML = html;
+        }
+        
+        // 搜索回复
+        function searchReplies() {
+            const filter = document.getElementById('replySearch').value;
+            loadReplyData(filter);
+        }
+        
+        // 编辑回复
+        function editReply(id) {
+            const reply = replies.find(r => r.id === id);
+            if (reply) {
+                alert('编辑功能开发中...');
+            }
+        }
+        
+        // 删除回复
+        function deleteReply(id) {
+            if (confirm('确定删除此回复吗？')) {
+                replies = replies.filter(r => r.id !== id);
+                localStorage.setItem('replies', JSON.stringify(replies));
+                loadReplyData();
+            }
+        }
+        
+        // 加载设置
+        function loadSettings() {
+            const logo = document.getElementById('pageLogo');
+            const background = document.getElementById('pageBackground');
+            
+            if (settings.logo) {
+                logo.src = settings.logo;
+            }
+            
+            if (settings.background) {
+                background.style.backgroundImage = `url(${settings.background})`;
+            }
+        }
+        
+        // 加载设置预览
+        function loadSettingsPreview() {
+            const logoPreview = document.getElementById('logoPreview');
+            const bgPreview = document.getElementById('bgPreview');
+            const pokePreview = document.getElementById('pokePreview');
+            
+            logoPreview.innerHTML = '';
+            bgPreview.innerHTML = '';
+            pokePreview.innerHTML = '';
+            
+            if (settings.logo) {
+                logoPreview.innerHTML = `
+                    <img src="${settings.logo}" class="uploaded-image" alt="LOGO预览">
+                    <div>
+                        <button onclick="deleteImage('logo')">删除LOGO</button>
+                    </div>
+                `;
+            }
+            
+            if (settings.background) {
+                bgPreview.innerHTML = `
+                    <img src="${settings.background}" class="uploaded-image" alt="背景预览" style="max-width: 300px;">
+                    <div>
+                        <button onclick="deleteImage('background')">删除背景</button>
+                    </div>
+                `;
+            }
+            
+            if (settings.pokeImage) {
+                pokePreview.innerHTML = `
+                    <img src="${settings.pokeImage}" class="uploaded-image" alt="戳戳我图片预览">
+                    <div>
+                        <button onclick="deleteImage('pokeImage')">删除图片</button>
+                    </div>
+                `;
+            }
+        }
+        
+        // 上传LOGO
+        function uploadLogo() {
+            const fileInput = document.getElementById('logoUpload');
+            if (fileInput.files.length > 0) {
+                const file = fileInput.files[0];
+                const reader = new FileReader();
+                
+                reader.onload = function(e) {
+                    settings.logo = e.target.result;
+                    localStorage.setItem('settings', JSON.stringify(settings));
+                    loadSettings();
+                    loadSettingsPreview();
+                };
+                
+                reader.readAsDataURL(file);
+            }
+        }
+        
+        // 上传背景
+        function uploadBackground() {
+            const fileInput = document.getElementById('bgUpload');
+            if (fileInput.files.length > 0) {
+                const file = fileInput.files[0];
+                const reader = new FileReader();
+                
+                reader.onload = function(e) {
+                    settings.background = e.target.result;
+                    localStorage.setItem('settings', JSON.stringify(settings));
+                    loadSettings();
+                    loadSettingsPreview();
+                };
+                
+                reader.readAsDataURL(file);
+            }
+        }
+        
+        // 上传戳戳我图片
+        function uploadPokeImage() {
+            const fileInput = document.getElementById('pokeUpload');
+            if (fileInput.files.length > 0) {
+                const file = fileInput.files[0];
+                const reader = new FileReader();
+                
+                reader.onload = function(e) {
+                    settings.pokeImage = e.target.result;
+                    localStorage.setItem('settings', JSON.stringify(settings));
+                    loadSettingsPreview();
+                    loadPokeImage();
+                };
+                
+                reader.readAsDataURL(file);
+            }
+        }
+        
+        // 删除图片
+        function deleteImage(type) {
+            if (confirm('确定删除此图片吗？')) {
+                settings[type] = '';
+                localStorage.setItem('settings', JSON.stringify(settings));
+                loadSettings();
+                loadSettingsPreview();
+                
+                if (type === 'pokeImage') {
+                    loadPokeImage();
+                }
+            }
+        }
+        
+        // 加载戳戳我图片
+        function loadPokeImage() {
+            const container = document.getElementById('pokeImageContainer');
+            if (settings.pokeImage) {
+                container.innerHTML = `
+                    <img src="${settings.pokeImage}" class="poked-image" alt="戳戳我" onclick="showImageModal('${settings.pokeImage}')">
+                `;
+            } else {
+                container.innerHTML = '<div class="no-data">暂无图片，请在设置中上传</div>';
+            }
+        }
+        
+        // 显示LOGO放大模态框
+        function showLogoModal() {
+            if (settings.logo) {
+                document.getElementById('modalLogo').src = settings.logo;
+                document.getElementById('logoModal').classList.add('show');
+            }
+        }
+        
+        // 显示图片放大模态框
+        function showImageModal(src) {
+            document.getElementById('modalImage').src = src;
+            document.getElementById('imageModal').classList.add('show');
+        }
+        
+        // 点击模态框背景关闭
+        document.querySelectorAll('.modal, .logo-modal, .image-modal').forEach(modal => {
+            modal.addEventListener('click', function(e) {
+                if (e.target === this) {
+                    this.classList.remove('show');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
