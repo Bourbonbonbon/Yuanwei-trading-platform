@@ -749,7 +749,7 @@
                             <div class="form-group">
                                 <label class="form-label">发帖编号</label>
                                 <input type="text" class="form-control" id="postNumber" value="提交时自动生成" readonly>
-                                <p class="number-hint">编号格式：年月日+001至099（提交时自动生成）</p>
+                                <p class="number-hint">编号格式：年月日+001至999（提交时自动生成）</p>
                             </div>
                             
                             <div class="form-row">
@@ -896,7 +896,7 @@
                             <div class="form-group">
                                 <label class="form-label">发帖编号</label>
                                 <input type="text" class="form-control" id="replyNumber" value="提交时自动生成" readonly>
-                                <p class="number-hint">编号格式：年月日+YW+001至099（提交时自动生成）</p>
+                                <p class="number-hint">编号格式：年月日+YW+001至999（提交时自动生成）</p>
                             </div>
                             
                             <div class="form-row">
@@ -1550,8 +1550,8 @@
                 
                 // 生成序号
                 const seq = todayPosts.length + 1;
-                if (seq > 99) {
-                    showMessage('当天发帖数量已达到上限（99条）！', 'error');
+                if (seq > 999) {
+                    showMessage('当天发帖数量已达到上限（999条）！', 'error');
                     return;
                 }
                 const seqStr = String(seq).padStart(3, '0');
@@ -1770,8 +1770,8 @@
                 
                 // 生成序号
                 const seq = todayReplies.length + 1;
-                if (seq > 99) {
-                    showMessage('当天回复数量已达到上限（99条）！', 'error');
+                if (seq > 999) {
+                    showMessage('当天回复数量已达到上限（999条）！', 'error');
                     return;
                 }
                 const seqStr = String(seq).padStart(3, '0');
