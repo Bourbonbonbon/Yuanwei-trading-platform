@@ -555,6 +555,11 @@
             </div>
             
             <div id="accountQueryContent" style="display: none;">
+                <div class="search-box">
+                    <input type="text" id="accountSearch" placeholder="搜索昵称、名称、手机尾号等">
+                    <button id="searchAccountBtn" class="btn">搜索</button>
+                    <button id="resetAccountSearchBtn" class="btn btn-secondary">重置</button>
+                </div>
                 <div class="data-section">
                     <h3 class="section-title">所有账号信息</h3>
                     <div id="accountQueryDataContainer">
@@ -793,6 +798,91 @@
                 </div>
                 
                 <button type="submit" class="btn" style="width: 100%;">提交申请</button>
+            </form>
+        </div>
+    </div>
+    
+    <!-- 编辑账号信息模态框 -->
+    <div class="modal" id="editAccountModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">编辑账号信息</h3>
+                <button class="close-btn" id="closeEditAccountModal">&times;</button>
+            </div>
+            <form id="editAccountForm">
+                <input type="hidden" id="editAccountId">
+                
+                <div class="form-group">
+                    <label for="editNickname">昵称：</label>
+                    <input type="text" id="editNickname" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="editUsername">名称：</label>
+                    <input type="text" id="editUsername" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="editPhoneTail">手机尾号：</label>
+                    <input type="text" id="editPhoneTail" maxlength="4" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="editAge">年龄：</label>
+                    <input type="number" id="editAge" min="1" max="100" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="editHeight">身高（厘米）：</label>
+                    <input type="number" id="editHeight" min="100" max="250" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="editWeight">体重（公斤）：</label>
+                    <input type="number" id="editWeight" min="30" max="200" step="0.1" required>
+                </div>
+                
+                <div class="form-group">
+                    <label>属性：</label>
+                    <div class="radio-group">
+                        <div class="radio-item">
+                            <input type="radio" id="editAttribute1" name="editAttribute" value="1" required>
+                            <label for="editAttribute1">1</label>
+                        </div>
+                        <div class="radio-item">
+                            <input type="radio" id="editAttribute0" name="editAttribute" value="0">
+                            <label for="editAttribute0">0</label>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="editSmAttribute">SM属性：</label>
+                    <select id="editSmAttribute" required>
+                        <option value="">请选择</option>
+                        <option value="S">S</option>
+                        <option value="M">M</option>
+                        <option value="Sub">Sub</option>
+                        <option value="Dom">Dom</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="editDickLength">屌长（厘米）：</label>
+                    <input type="number" id="editDickLength" min="0" max="30" step="0.1">
+                </div>
+                
+                <div class="form-group">
+                    <label for="editDickThickness">屌粗（厘米）：</label>
+                    <input type="number" id="editDickThickness" min="0" max="10" step="0.1">
+                </div>
+                
+                <div class="form-group">
+                    <label for="editSpecialPreferences">特殊喜好：</label>
+                    <textarea id="editSpecialPreferences" rows="3" placeholder="原味/圣水/捆绑等"></textarea>
+                </div>
+                
+                <button type="submit" class="btn" style="width: 100%;">保存修改</button>
             </form>
         </div>
     </div>
