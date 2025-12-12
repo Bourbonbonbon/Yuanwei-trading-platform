@@ -6,6 +6,7 @@
     <title>原味交易平台</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+        /* 所有现有CSS样式保持不变 */
         * {
             margin: 0;
             padding: 0;
@@ -469,6 +470,49 @@
             font-size: 14px;
         }
         
+        /* 返回按钮样式 */
+        .back-btn {
+            display: inline-block;
+            margin-bottom: 20px;
+            padding: 8px 16px;
+            background-color: #f1f1f1;
+            color: #333;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s;
+        }
+        
+        .back-btn:hover {
+            background-color: #e1e1e1;
+        }
+        
+        .back-btn i {
+            margin-right: 8px;
+        }
+        
+        /* 消息提示样式 */
+        .message {
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            text-align: center;
+            font-weight: 500;
+        }
+        
+        .message.success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        
+        .message.error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        
         /* 响应式调整 */
         @media (max-width: 768px) {
             .tabs {
@@ -531,7 +575,7 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <h3>账号注册</h3>
-                        <button class="close-modal">&times;</button>
+                        <button class="close-modal" data-modal="accountModal">&times;</button>
                     </div>
                     <form id="accountForm">
                         <div class="form-row">
@@ -622,7 +666,7 @@
                         </div>
                         
                         <div class="form-buttons">
-                            <button type="button" class="btn btn-cancel close-modal">取消</button>
+                            <button type="button" class="btn btn-cancel" data-modal="accountModal">取消</button>
                             <button type="submit" class="btn btn-submit">提交注册</button>
                         </div>
                     </form>
@@ -693,7 +737,7 @@
                     <div class="modal-content">
                         <div class="modal-header">
                             <h3>发布新帖子</h3>
-                            <button class="close-modal">&times;</button>
+                            <button class="close-modal" data-modal="postModal">&times;</button>
                         </div>
                         <form id="postForm">
                             <div class="form-group">
@@ -793,7 +837,7 @@
                             </div>
                             
                             <div class="form-buttons">
-                                <button type="button" class="btn btn-cancel close-modal">取消</button>
+                                <button type="button" class="btn btn-cancel" data-modal="postModal">取消</button>
                                 <button type="submit" class="btn btn-submit">发布帖子</button>
                             </div>
                         </form>
@@ -834,7 +878,7 @@
                     <div class="modal-content">
                         <div class="modal-header">
                             <h3>回复帖子</h3>
-                            <button class="close-modal">&times;</button>
+                            <button class="close-modal" data-modal="replyModal">&times;</button>
                         </div>
                         <form id="replyForm">
                             <div class="form-group">
@@ -945,7 +989,7 @@
                             </div>
                             
                             <div class="form-buttons">
-                                <button type="button" class="btn btn-cancel close-modal">取消</button>
+                                <button type="button" class="btn btn-cancel" data-modal="replyModal">取消</button>
                                 <button type="submit" class="btn btn-submit">提交回复</button>
                             </div>
                         </form>
@@ -1047,12 +1091,17 @@
                         </div>
                     </div>
                 </div>
+                
+                <div style="margin-top: 30px; text-align: center;">
+                    <button id="backToHome" class="back-btn"><i class="fas fa-arrow-left"></i> 返回首页</button>
+                </div>
             </div>
         </div>
         
         <!-- 戳戳我标签页 -->
         <div id="poke" class="tab-content">
             <h2><i class="fas fa-heart"></i> 戳戳我</h2>
+            <button class="back-btn" onclick="switchTab('settings')"><i class="fas fa-arrow-left"></i> 返回设置</button>
             <div class="poke-container">
                 <img id="pokeImage" class="poke-image" src="" alt="戳戳我图片">
                 <p id="noPokeImage" style="color: #888; font-size: 18px;">请先在设置页面上传戳戳我图片</p>
@@ -1104,8 +1153,14 @@
             // 加载设置
             loadSettings();
             
+            // 初始化模态框关闭功能
+            initModalClose();
+            
             // 激活上次的标签页
             document.querySelector(`[data-tab="${activeTab}"]`).click();
+            
+            // 初始化消息系统
+            initMessageSystem();
         });
         
         // 初始化标签页切换
@@ -1135,26 +1190,95 @@
             });
         }
         
+        // 切换标签页函数
+        function switchTab(tabId) {
+            document.querySelector(`[data-tab="${tabId}"]`).click();
+        }
+        
+        // 初始化模态框关闭功能
+        function initModalClose() {
+            // 处理关闭按钮点击
+            document.addEventListener('click', function(e) {
+                // 关闭按钮
+                if (e.target.classList.contains('close-modal')) {
+                    const modalId = e.target.getAttribute('data-modal');
+                    if (modalId) {
+                        document.getElementById(modalId).classList.remove('active');
+                    } else {
+                        // 如果没有指定modal，关闭所有模态框
+                        document.querySelectorAll('.modal.active').forEach(modal => {
+                            modal.classList.remove('active');
+                        });
+                    }
+                }
+                
+                // 取消按钮
+                if (e.target.classList.contains('btn-cancel')) {
+                    const modalId = e.target.getAttribute('data-modal');
+                    if (modalId) {
+                        document.getElementById(modalId).classList.remove('active');
+                    } else {
+                        // 如果没有指定modal，关闭父级模态框
+                        const modal = e.target.closest('.modal');
+                        if (modal) {
+                            modal.classList.remove('active');
+                        }
+                    }
+                }
+                
+                // 点击模态框外部关闭
+                if (e.target.classList.contains('modal')) {
+                    e.target.classList.remove('active');
+                }
+            });
+            
+            // 返回首页按钮
+            document.getElementById('backToHome')?.addEventListener('click', function() {
+                switchTab('account');
+            });
+        }
+        
+        // 初始化消息系统
+        function initMessageSystem() {
+            // 显示消息函数
+            window.showMessage = function(message, type = 'success', duration = 3000) {
+                // 移除现有消息
+                const existingMessage = document.querySelector('.message');
+                if (existingMessage) {
+                    existingMessage.remove();
+                }
+                
+                // 创建新消息
+                const messageDiv = document.createElement('div');
+                messageDiv.className = `message ${type}`;
+                messageDiv.textContent = message;
+                
+                // 添加到当前活动标签页
+                const activeTabContent = document.querySelector('.tab-content.active');
+                if (activeTabContent) {
+                    activeTabContent.prepend(messageDiv);
+                    
+                    // 自动移除消息
+                    setTimeout(() => {
+                        if (messageDiv.parentNode) {
+                            messageDiv.remove();
+                        }
+                    }, duration);
+                }
+            };
+        }
+        
         // 初始化账号信息页面
         function initAccountPage() {
             const openAccountModalBtn = document.getElementById('openAccountModal');
             const accountModal = document.getElementById('accountModal');
             const passwordModal = document.getElementById('passwordModal');
-            const closeModalBtns = document.querySelectorAll('.close-modal');
             const accountForm = document.getElementById('accountForm');
             const otherPreferenceInput = document.getElementById('otherPreference');
             
             // 打开账号注册弹窗
             openAccountModalBtn.addEventListener('click', function() {
                 accountModal.classList.add('active');
-            });
-            
-            // 关闭弹窗
-            closeModalBtns.forEach(btn => {
-                btn.addEventListener('click', function() {
-                    accountModal.classList.remove('active');
-                    passwordModal.classList.remove('active');
-                });
             });
             
             // 特殊喜好其他选项显示/隐藏
@@ -1165,6 +1289,7 @@
                         otherPreferenceInput.style.display = 'block';
                     } else if (this.value === '其他' && !this.checked) {
                         otherPreferenceInput.style.display = 'none';
+                        otherPreferenceInput.value = '';
                     }
                 });
             });
@@ -1210,6 +1335,8 @@
                     passwordModal.classList.remove('active');
                     accountForm.reset();
                     otherPreferenceInput.style.display = 'none';
+                    otherPreferenceInput.value = '';
+                    showMessage('账号注册成功！您的密码是000000，请妥善保存。', 'success');
                 }, 5000);
             });
         }
@@ -1230,8 +1357,9 @@
                     queryPasswordArea.style.display = 'none';
                     queryDataArea.style.display = 'block';
                     displayAccounts();
+                    showMessage('密码验证成功，已进入管理界面', 'success');
                 } else {
-                    alert('密码错误！');
+                    showMessage('密码错误！', 'error');
                     queryPassword.value = '';
                 }
             });
@@ -1302,7 +1430,6 @@
             const postPasswordArea = document.getElementById('postPasswordArea');
             const postDataArea = document.getElementById('postDataArea');
             const openPostModalBtn = document.getElementById('openPostModal');
-            const postModal = document.getElementById('postModal');
             const postForm = document.getElementById('postForm');
             const postNumber = document.getElementById('postNumber');
             const postDate = document.getElementById('postDate');
@@ -1319,8 +1446,9 @@
                     postPasswordArea.style.display = 'none';
                     postDataArea.style.display = 'block';
                     displayPosts();
+                    showMessage('密码验证成功，可以发布帖子了', 'success');
                 } else {
-                    alert('密码错误！');
+                    showMessage('密码错误！', 'error');
                     postPassword.value = '';
                 }
             });
@@ -1334,7 +1462,7 @@
                                String(now.getDate()).padStart(2, '0');
                 
                 // 生成序号
-                postCounter++;
+                postCounter = parseInt(localStorage.getItem('postCounter') || 0) + 1;
                 if (postCounter > 99) postCounter = 1;
                 const seq = String(postCounter).padStart(3, '0');
                 
@@ -1347,7 +1475,7 @@
                                 ':' + 
                                 String(now.getMinutes()).padStart(2, '0');
                 
-                postModal.classList.add('active');
+                document.getElementById('postModal').classList.add('active');
             });
             
             // 交易类型其他选项
@@ -1355,6 +1483,7 @@
                 checkbox.addEventListener('change', function() {
                     if (this.value === '其他' && this.checked) {
                         otherTradeType.style.display = 'block';
+                        otherTradeType.focus();
                     } else if (this.value === '其他' && !this.checked) {
                         otherTradeType.style.display = 'none';
                         otherTradeType.value = '';
@@ -1367,6 +1496,7 @@
                 checkbox.addEventListener('change', function() {
                     if (this.value === '其他' && this.checked) {
                         otherTargetGroup.style.display = 'block';
+                        otherTargetGroup.focus();
                     } else if (this.value === '其他' && !this.checked) {
                         otherTargetGroup.style.display = 'none';
                         otherTargetGroup.value = '';
@@ -1379,6 +1509,7 @@
                 radio.addEventListener('change', function() {
                     if (this.value === '其他') {
                         otherTradeMethod.style.display = 'block';
+                        otherTradeMethod.focus();
                     } else {
                         otherTradeMethod.style.display = 'none';
                         otherTradeMethod.value = '';
@@ -1425,7 +1556,7 @@
                 localStorage.setItem('posts', JSON.stringify(posts));
                 
                 // 关闭弹窗并重置表单
-                postModal.classList.remove('active');
+                document.getElementById('postModal').classList.remove('active');
                 postForm.reset();
                 otherTradeType.style.display = 'none';
                 otherTargetGroup.style.display = 'none';
@@ -1433,6 +1564,7 @@
                 
                 // 刷新帖子列表
                 displayPosts();
+                showMessage('帖子发布成功！', 'success');
             });
             
             // 搜索功能
@@ -1497,7 +1629,6 @@
             const replyPasswordArea = document.getElementById('replyPasswordArea');
             const replyDataArea = document.getElementById('replyDataArea');
             const openReplyModalBtn = document.getElementById('openReplyModal');
-            const replyModal = document.getElementById('replyModal');
             const replyForm = document.getElementById('replyForm');
             const replyNumber = document.getElementById('replyNumber');
             const replyDate = document.getElementById('replyDate');
@@ -1515,8 +1646,9 @@
                     replyPasswordArea.style.display = 'none';
                     replyDataArea.style.display = 'block';
                     displayReplies();
+                    showMessage('密码验证成功，可以回复帖子了', 'success');
                 } else {
-                    alert('密码错误！');
+                    showMessage('密码错误！', 'error');
                     replyPassword.value = '';
                 }
             });
@@ -1530,7 +1662,7 @@
                                String(now.getDate()).padStart(2, '0');
                 
                 // 生成序号
-                replyCounter++;
+                replyCounter = parseInt(localStorage.getItem('replyCounter') || 0) + 1;
                 if (replyCounter > 99) replyCounter = 1;
                 const seq = String(replyCounter).padStart(3, '0');
                 
@@ -1543,7 +1675,7 @@
                                 ':' + 
                                 String(now.getMinutes()).padStart(2, '0');
                 
-                replyModal.classList.add('active');
+                document.getElementById('replyModal').classList.add('active');
             });
             
             // 交易类型其他选项
@@ -1551,6 +1683,7 @@
                 checkbox.addEventListener('change', function() {
                     if (this.value === '其他' && this.checked) {
                         otherReplyTradeType.style.display = 'block';
+                        otherReplyTradeType.focus();
                     } else if (this.value === '其他' && !this.checked) {
                         otherReplyTradeType.style.display = 'none';
                         otherReplyTradeType.value = '';
@@ -1563,6 +1696,7 @@
                 checkbox.addEventListener('change', function() {
                     if (this.value === '其他' && this.checked) {
                         otherReplyTargetGroup.style.display = 'block';
+                        otherReplyTargetGroup.focus();
                     } else if (this.value === '其他' && !this.checked) {
                         otherReplyTargetGroup.style.display = 'none';
                         otherReplyTargetGroup.value = '';
@@ -1575,6 +1709,7 @@
                 radio.addEventListener('change', function() {
                     if (this.value === '其他') {
                         otherReplyTradeMethod.style.display = 'block';
+                        otherReplyTradeMethod.focus();
                     } else {
                         otherReplyTradeMethod.style.display = 'none';
                         otherReplyTradeMethod.value = '';
@@ -1587,6 +1722,7 @@
                 radio.addEventListener('change', function() {
                     if (this.value === '其他') {
                         otherReplyPrice.style.display = 'block';
+                        otherReplyPrice.focus();
                     } else {
                         otherReplyPrice.style.display = 'none';
                         otherReplyPrice.value = '';
@@ -1639,7 +1775,7 @@
                 localStorage.setItem('replies', JSON.stringify(replies));
                 
                 // 关闭弹窗并重置表单
-                replyModal.classList.remove('active');
+                document.getElementById('replyModal').classList.remove('active');
                 replyForm.reset();
                 otherReplyTradeType.style.display = 'none';
                 otherReplyTargetGroup.style.display = 'none';
@@ -1648,6 +1784,7 @@
                 
                 // 刷新回复列表
                 displayReplies();
+                showMessage('回复发布成功！', 'success');
             });
             
             // 搜索功能
@@ -1719,8 +1856,9 @@
                 if (settingsPassword.value === ADMIN_PASSWORD) {
                     settingsPasswordArea.style.display = 'none';
                     settingsArea.style.display = 'block';
+                    showMessage('密码验证成功，可以修改设置了', 'success');
                 } else {
-                    alert('密码错误！');
+                    showMessage('密码错误！', 'error');
                     settingsPassword.value = '';
                 }
             });
@@ -1739,6 +1877,7 @@
                         settings.logo = event.target.result;
                         localStorage.setItem('settings', JSON.stringify(settings));
                         loadSettings();
+                        showMessage('LOGO上传成功！', 'success');
                     };
                     
                     reader.readAsDataURL(file);
@@ -1759,6 +1898,7 @@
                         settings.background = event.target.result;
                         localStorage.setItem('settings', JSON.stringify(settings));
                         loadSettings();
+                        showMessage('背景图片上传成功！', 'success');
                     };
                     
                     reader.readAsDataURL(file);
@@ -1779,6 +1919,7 @@
                         settings.pokeImage = event.target.result;
                         localStorage.setItem('settings', JSON.stringify(settings));
                         loadSettings();
+                        showMessage('戳戳我图片上传成功！', 'success');
                     };
                     
                     reader.readAsDataURL(file);
@@ -1791,6 +1932,7 @@
                     delete settings.logo;
                     localStorage.setItem('settings', JSON.stringify(settings));
                     loadSettings();
+                    showMessage('LOGO已删除', 'success');
                 }
             });
             
@@ -1800,6 +1942,7 @@
                     delete settings.background;
                     localStorage.setItem('settings', JSON.stringify(settings));
                     loadSettings();
+                    showMessage('背景图片已删除', 'success');
                 }
             });
             
@@ -1809,6 +1952,7 @@
                     delete settings.pokeImage;
                     localStorage.setItem('settings', JSON.stringify(settings));
                     loadSettings();
+                    showMessage('戳戳我图片已删除', 'success');
                 }
             });
         }
@@ -1824,8 +1968,10 @@
             document.addEventListener('click', function(e) {
                 if (e.target.id === 'pokeImage' || e.target.id === 'currentLogo' || 
                     e.target.id === 'currentBg' || e.target.id === 'currentPoke') {
-                    modalImage.src = e.target.src;
-                    imageModal.classList.add('active');
+                    if (e.target.src) {
+                        modalImage.src = e.target.src;
+                        imageModal.classList.add('active');
+                    }
                 }
             });
             
@@ -1873,6 +2019,8 @@
                 document.getElementById('deleteBgBtn').style.display = 'inline-block';
             } else {
                 document.body.style.backgroundImage = '';
+                document.body.style.backgroundSize = '';
+                document.body.style.backgroundAttachment = '';
                 document.getElementById('currentBg').src = '';
                 document.getElementById('currentBg').style.display = 'none';
                 document.getElementById('noBg').style.display = 'block';
@@ -1933,6 +2081,16 @@
                                   account.preference.includes(checkbox.value);
             });
             
+            // 特殊喜好的"其他"选项
+            const otherPreferenceInput = document.getElementById('otherPreference');
+            if (Array.isArray(account.preference)) {
+                const otherPref = account.preference.find(p => !['原味', '圣水', '捆绑'].includes(p));
+                if (otherPref) {
+                    otherPreferenceInput.value = otherPref;
+                    otherPreferenceInput.style.display = 'block';
+                }
+            }
+            
             // 显示弹窗
             const modal = document.getElementById('accountModal');
             modal.classList.add('active');
@@ -1955,7 +2113,7 @@
                 }
                 
                 // 处理特殊喜好中的"其他"
-                const otherPreference = document.getElementById('otherPreference').value;
+                const otherPreference = otherPreferenceInput.value;
                 if (otherPreference) {
                     if (!updatedAccount.preference) updatedAccount.preference = [];
                     updatedAccount.preference.push(otherPreference);
@@ -1971,11 +2129,15 @@
                     if (document.getElementById('queryDataArea').style.display !== 'none') {
                         displayAccounts();
                     }
+                    
+                    showMessage('账号信息修改成功！', 'success');
                 }
                 
                 // 关闭弹窗
                 modal.classList.remove('active');
                 form.reset();
+                otherPreferenceInput.style.display = 'none';
+                otherPreferenceInput.value = '';
                 form.removeEventListener('submit', submitHandler);
             };
             
@@ -1992,6 +2154,8 @@
                 if (document.getElementById('queryDataArea').style.display !== 'none') {
                     displayAccounts();
                 }
+                
+                showMessage('账号删除成功！', 'success');
             }
         };
         
@@ -2026,6 +2190,32 @@
             form.querySelector('input[name="price"]').value = post.price || '';
             form.querySelector('textarea[name="requirements"]').value = post.requirements || '';
             
+            // 其他选项的处理
+            const otherTradeType = document.getElementById('otherTradeType');
+            const otherTargetGroup = document.getElementById('otherTargetGroup');
+            const otherTradeMethod = document.getElementById('otherTradeMethod');
+            
+            if (Array.isArray(post.tradeType)) {
+                const otherTrade = post.tradeType.find(t => !['袜子', '内裤', '鞋'].includes(t));
+                if (otherTrade) {
+                    otherTradeType.value = otherTrade;
+                    otherTradeType.style.display = 'block';
+                }
+            }
+            
+            if (Array.isArray(post.targetGroup)) {
+                const otherTarget = post.targetGroup.find(g => !['军', '警', '消', '保安', '民工'].includes(g));
+                if (otherTarget) {
+                    otherTargetGroup.value = otherTarget;
+                    otherTargetGroup.style.display = 'block';
+                }
+            }
+            
+            if (post.tradeMethod && !['快递', '面交'].includes(post.tradeMethod)) {
+                otherTradeMethod.value = post.tradeMethod;
+                otherTradeMethod.style.display = 'block';
+            }
+            
             // 显示弹窗
             const modal = document.getElementById('postModal');
             modal.classList.add('active');
@@ -2056,11 +2246,16 @@
                     if (document.getElementById('postDataArea').style.display !== 'none') {
                         displayPosts();
                     }
+                    
+                    showMessage('帖子修改成功！', 'success');
                 }
                 
                 // 关闭弹窗
                 modal.classList.remove('active');
                 form.reset();
+                otherTradeType.style.display = 'none';
+                otherTargetGroup.style.display = 'none';
+                otherTradeMethod.style.display = 'none';
                 form.removeEventListener('submit', submitHandler);
             };
             
@@ -2077,6 +2272,8 @@
                 if (document.getElementById('postDataArea').style.display !== 'none') {
                     displayPosts();
                 }
+                
+                showMessage('帖子删除成功！', 'success');
             }
         };
         
@@ -2115,6 +2312,38 @@
             
             form.querySelector('textarea[name="replyNote"]').value = reply.note || '';
             
+            // 其他选项的处理
+            const otherReplyTradeType = document.getElementById('otherReplyTradeType');
+            const otherReplyTargetGroup = document.getElementById('otherReplyTargetGroup');
+            const otherReplyTradeMethod = document.getElementById('otherReplyTradeMethod');
+            const otherReplyPrice = document.getElementById('otherReplyPrice');
+            
+            if (Array.isArray(reply.tradeType)) {
+                const otherTrade = reply.tradeType.find(t => !['袜子', '内裤', '鞋'].includes(t));
+                if (otherTrade) {
+                    otherReplyTradeType.value = otherTrade;
+                    otherReplyTradeType.style.display = 'block';
+                }
+            }
+            
+            if (Array.isArray(reply.targetGroup)) {
+                const otherTarget = reply.targetGroup.find(g => !['军', '警', '消', '保安', '民工'].includes(g));
+                if (otherTarget) {
+                    otherReplyTargetGroup.value = otherTarget;
+                    otherReplyTargetGroup.style.display = 'block';
+                }
+            }
+            
+            if (reply.tradeMethod && !['快递', '面交'].includes(reply.tradeMethod)) {
+                otherReplyTradeMethod.value = reply.tradeMethod;
+                otherReplyTradeMethod.style.display = 'block';
+            }
+            
+            if (reply.price && !['原帖价格', '回帖价格'].includes(reply.price)) {
+                otherReplyPrice.value = reply.price;
+                otherReplyPrice.style.display = 'block';
+            }
+            
             // 显示弹窗
             const modal = document.getElementById('replyModal');
             modal.classList.add('active');
@@ -2147,11 +2376,17 @@
                     if (document.getElementById('replyDataArea').style.display !== 'none') {
                         displayReplies();
                     }
+                    
+                    showMessage('回复修改成功！', 'success');
                 }
                 
                 // 关闭弹窗
                 modal.classList.remove('active');
                 form.reset();
+                otherReplyTradeType.style.display = 'none';
+                otherReplyTargetGroup.style.display = 'none';
+                otherReplyTradeMethod.style.display = 'none';
+                otherReplyPrice.style.display = 'none';
                 form.removeEventListener('submit', submitHandler);
             };
             
@@ -2168,6 +2403,8 @@
                 if (document.getElementById('replyDataArea').style.display !== 'none') {
                     displayReplies();
                 }
+                
+                showMessage('回复删除成功！', 'success');
             }
         };
     </script>
