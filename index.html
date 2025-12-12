@@ -9,17 +9,18 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Microsoft YaHei', sans-serif;
+            font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif;
         }
         
         body {
-            background-color: #f5f5f5;
+            background-color: #f8f9fa;
             color: #333;
             line-height: 1.6;
+            transition: background-image 0.3s ease;
         }
         
         .container {
-            max-width: 1200px;
+            max-width: 1400px;
             margin: 0 auto;
             padding: 20px;
         }
@@ -29,17 +30,21 @@
             align-items: center;
             margin-bottom: 20px;
             padding-bottom: 15px;
-            border-bottom: 1px solid #ddd;
+            border-bottom: 1px solid #dee2e6;
         }
         
         .logo {
             width: 75px;
             height: 75px;
-            border-radius: 5px;
+            border-radius: 8px;
             overflow: hidden;
             margin-right: 20px;
             cursor: pointer;
-            border: 1px solid #ddd;
+            border: 2px solid #6c757d;
+            background-color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
         
         .logo img {
@@ -49,18 +54,15 @@
         }
         
         .logo-placeholder {
-            width: 100%;
-            height: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background-color: #eee;
-            color: #999;
+            color: #6c757d;
             font-size: 12px;
+            text-align: center;
+            padding: 5px;
         }
         
         h1 {
-            color: #4a5568;
+            color: #495057;
+            font-size: 28px;
         }
         
         .tabs {
@@ -69,24 +71,27 @@
             border-radius: 8px 8px 0 0;
             overflow: hidden;
             box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            flex-wrap: wrap;
         }
         
         .tab {
             padding: 15px 25px;
             cursor: pointer;
-            background-color: #f1f1f1;
-            border-right: 1px solid #ddd;
+            background-color: #f1f3f5;
+            border-right: 1px solid #dee2e6;
             transition: all 0.3s;
             font-weight: 500;
+            white-space: nowrap;
         }
         
         .tab:hover {
-            background-color: #e9e9e9;
+            background-color: #e9ecef;
         }
         
         .tab.active {
             background-color: #fff;
-            border-bottom: 3px solid #4a90e2;
+            border-bottom: 3px solid #4263eb;
+            color: #4263eb;
         }
         
         .tab-content {
@@ -94,8 +99,8 @@
             background-color: #fff;
             padding: 30px;
             border-radius: 0 0 8px 8px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            min-height: 500px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            min-height: 600px;
         }
         
         .tab-content.active {
@@ -109,7 +114,7 @@
             width: 100%;
             height: 100%;
             background-color: rgba(0,0,0,0.5);
-            display: flex;
+            display: none;
             align-items: center;
             justify-content: center;
             z-index: 1000;
@@ -117,18 +122,18 @@
         
         .modal {
             background-color: white;
-            border-radius: 8px;
+            border-radius: 10px;
             padding: 30px;
             width: 90%;
-            max-width: 600px;
+            max-width: 700px;
             max-height: 90vh;
             overflow-y: auto;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
         }
         
         .modal h3 {
             margin-bottom: 20px;
-            color: #4a5568;
+            color: #495057;
             border-bottom: 1px solid #eee;
             padding-bottom: 10px;
         }
@@ -141,14 +146,22 @@
             display: block;
             margin-bottom: 8px;
             font-weight: 500;
+            color: #495057;
         }
         
         input, select, textarea {
             width: 100%;
             padding: 10px 15px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
+            border: 1px solid #ced4da;
+            border-radius: 5px;
             font-size: 16px;
+            transition: border-color 0.3s;
+        }
+        
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: #4263eb;
+            box-shadow: 0 0 0 3px rgba(66, 99, 235, 0.1);
         }
         
         textarea {
@@ -175,33 +188,34 @@
         
         .btn {
             padding: 12px 25px;
-            background-color: #4a90e2;
+            background-color: #4263eb;
             color: white;
             border: none;
-            border-radius: 4px;
+            border-radius: 5px;
             cursor: pointer;
             font-size: 16px;
             transition: background-color 0.3s;
+            font-weight: 500;
         }
         
         .btn:hover {
-            background-color: #3a7bc8;
+            background-color: #364fc7;
         }
         
         .btn-secondary {
-            background-color: #6c757d;
+            background-color: #868e96;
         }
         
         .btn-secondary:hover {
-            background-color: #5a6268;
+            background-color: #6c757d;
         }
         
         .btn-danger {
-            background-color: #e74c3c;
+            background-color: #e03131;
         }
         
         .btn-danger:hover {
-            background-color: #c0392b;
+            background-color: #c92a2a;
         }
         
         .btn-small {
@@ -214,9 +228,16 @@
             padding: 50px 20px;
         }
         
+        .password-prompt p {
+            margin-bottom: 20px;
+            font-size: 18px;
+            color: #495057;
+        }
+        
         .password-prompt input {
             max-width: 300px;
-            margin: 20px auto;
+            margin: 0 auto 20px auto;
+            display: block;
         }
         
         .data-container {
@@ -227,10 +248,11 @@
             width: 100%;
             border-collapse: collapse;
             margin-top: 20px;
+            border: 1px solid #dee2e6;
         }
         
         .data-table th, .data-table td {
-            border: 1px solid #ddd;
+            border: 1px solid #dee2e6;
             padding: 12px 15px;
             text-align: left;
         }
@@ -238,16 +260,21 @@
         .data-table th {
             background-color: #f8f9fa;
             font-weight: 600;
+            color: #495057;
         }
         
         .data-table tr:nth-child(even) {
-            background-color: #f9f9f9;
+            background-color: #f8f9fa;
+        }
+        
+        .data-table tr:hover {
+            background-color: #e9ecef;
         }
         
         .empty-data {
             text-align: center;
             padding: 40px 20px;
-            color: #999;
+            color: #868e96;
             font-style: italic;
         }
         
@@ -263,15 +290,15 @@
         
         .search-box input {
             flex: 1;
-            border-radius: 4px 0 0 4px;
+            border-radius: 5px 0 0 5px;
         }
         
         .search-box button {
-            border-radius: 0 4px 4px 0;
+            border-radius: 0 5px 5px 0;
         }
         
         .upload-area {
-            border: 2px dashed #ccc;
+            border: 2px dashed #adb5bd;
             border-radius: 8px;
             padding: 40px 20px;
             text-align: center;
@@ -281,14 +308,16 @@
         }
         
         .upload-area:hover {
-            border-color: #4a90e2;
+            border-color: #4263eb;
+            background-color: #f8f9fa;
         }
         
         .image-preview {
             max-width: 300px;
             margin: 20px auto;
-            border-radius: 5px;
+            border-radius: 8px;
             overflow: hidden;
+            border: 1px solid #dee2e6;
         }
         
         .image-preview img {
@@ -304,25 +333,27 @@
         }
         
         .setting-section {
-            background-color: #f9f9f9;
-            padding: 20px;
+            background-color: #f8f9fa;
+            padding: 25px;
             border-radius: 8px;
+            border: 1px solid #e9ecef;
         }
         
         .poked-me-container {
             display: flex;
             justify-content: center;
             align-items: center;
-            min-height: 400px;
+            min-height: 500px;
         }
         
         .poked-me-img {
-            max-width: 500px;
-            max-height: 500px;
+            max-width: 600px;
+            max-height: 600px;
             cursor: pointer;
-            border-radius: 8px;
+            border-radius: 10px;
             overflow: hidden;
-            box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            border: 1px solid #dee2e6;
         }
         
         .poked-me-img img {
@@ -332,22 +363,23 @@
         }
         
         .message {
-            padding: 15px;
-            border-radius: 4px;
+            padding: 15px 20px;
+            border-radius: 5px;
             margin-bottom: 20px;
             text-align: center;
+            font-weight: 500;
         }
         
         .message.success {
-            background-color: #d4edda;
-            color: #155724;
-            border: 1px solid #c3e6cb;
+            background-color: #d3f9d8;
+            color: #2b8a3e;
+            border: 1px solid #b2f2bb;
         }
         
         .message.error {
-            background-color: #f8d7da;
-            color: #721c24;
-            border: 1px solid #f5c6cb;
+            background-color: #ffe3e3;
+            color: #c92a2a;
+            border: 1px solid #ffc9c9;
         }
         
         .image-modal {
@@ -357,7 +389,7 @@
             width: 100%;
             height: 100%;
             background-color: rgba(0,0,0,0.9);
-            display: flex;
+            display: none;
             align-items: center;
             justify-content: center;
             z-index: 2000;
@@ -366,6 +398,7 @@
         .image-modal img {
             max-width: 90%;
             max-height: 90%;
+            border-radius: 5px;
         }
         
         .image-modal-close {
@@ -375,15 +408,27 @@
             color: white;
             font-size: 40px;
             cursor: pointer;
+            font-weight: bold;
         }
         
         footer {
             margin-top: 30px;
             text-align: center;
             padding: 20px;
-            color: #777;
+            color: #868e96;
             font-size: 14px;
-            border-top: 1px solid #eee;
+            border-top: 1px solid #dee2e6;
+        }
+        
+        .form-actions {
+            display: flex;
+            gap: 10px;
+            justify-content: flex-end;
+            margin-top: 20px;
+        }
+        
+        .other-input {
+            margin-top: 10px;
         }
         
         @media (max-width: 768px) {
@@ -405,6 +450,19 @@
                 padding: 20px;
                 width: 95%;
             }
+            
+            .data-table {
+                display: block;
+                overflow-x: auto;
+            }
+            
+            .form-actions {
+                flex-direction: column;
+            }
+            
+            .form-actions button {
+                width: 100%;
+            }
         }
     </style>
 </head>
@@ -412,7 +470,7 @@
     <div class="container">
         <header>
             <div class="logo" id="siteLogo">
-                <div class="logo-placeholder">LOGO</div>
+                <div class="logo-placeholder">LOGO<br>75×75</div>
             </div>
             <h1>原味交易平台</h1>
         </header>
@@ -462,8 +520,8 @@
                                 <th>体重(kg)</th>
                                 <th>属性</th>
                                 <th>SM属性</th>
-                                <th>肉棒长(cm)</th>
-                                <th>肉棒粗(cm)</th>
+                                <th>屌长(cm)</th>
+                                <th>屌粗(cm)</th>
                                 <th>特殊喜好</th>
                                 <th>操作</th>
                             </tr>
@@ -582,7 +640,7 @@
                         <input type="file" id="logoUpload" accept=".jpg,.jpeg,.png" style="display: none;">
                     </div>
                     <div class="image-preview" id="logoPreview">
-                        <!-- LOGO预览会在这里显示 -->
+                        <div class="empty-data">未上传LOGO</div>
                     </div>
                     <div class="action-buttons">
                         <button class="btn btn-secondary" id="modifyLogo">修改LOGO</button>
@@ -599,7 +657,7 @@
                         <input type="file" id="bgUpload" accept=".jpg,.jpeg,.png" style="display: none;">
                     </div>
                     <div class="image-preview" id="bgPreview">
-                        <!-- 背景预览会在这里显示 -->
+                        <div class="empty-data">未上传背景</div>
                     </div>
                     <div class="action-buttons">
                         <button class="btn btn-secondary" id="modifyBg">修改背景</button>
@@ -616,7 +674,7 @@
                         <input type="file" id="pokedMeUpload" accept=".jpg,.jpeg,.png" style="display: none;">
                     </div>
                     <div class="image-preview" id="pokedMePreview">
-                        <!-- 戳戳我图片预览会在这里显示 -->
+                        <div class="empty-data">未上传图片</div>
                     </div>
                     <div class="action-buttons">
                         <button class="btn btn-secondary" id="modifyPokedMe">修改图片</button>
@@ -637,12 +695,12 @@
         </div>
         
         <footer>
-            <p>原味交易平台 &copy; 2023 - 仅供演示使用</p>
+            <p>原味交易平台 &copy; 2023 - 仅供功能演示</p>
         </footer>
     </div>
     
     <!-- 账号信息弹窗 -->
-    <div class="modal-overlay" id="accountModal" style="display: none;">
+    <div class="modal-overlay" id="accountModal">
         <div class="modal">
             <h3>账号申请</h3>
             <form id="accountForm">
@@ -700,18 +758,18 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="dickLength">肉棒长(厘米):</label>
+                    <label for="dickLength">屌长(厘米):</label>
                     <input type="number" step="0.1" id="dickLength" min="1" max="30" required>
                 </div>
                 <div class="form-group">
-                    <label for="dickThickness">肉棒粗(厘米):</label>
+                    <label for="dickThickness">屌粗(厘米):</label>
                     <input type="number" step="0.1" id="dickThickness" min="1" max="20" required>
                 </div>
                 <div class="form-group">
                     <label for="preference">特殊喜好:</label>
                     <textarea id="preference" placeholder="原味/圣水/捆绑等" required></textarea>
                 </div>
-                <div class="form-group">
+                <div class="form-actions">
                     <button type="submit" class="btn">提交</button>
                     <button type="button" class="btn btn-secondary" id="cancelAccountForm">取消</button>
                 </div>
@@ -723,7 +781,7 @@
     <div class="message" id="passwordMessage" style="display: none;"></div>
     
     <!-- 图片查看模态框 -->
-    <div class="image-modal" id="imageModal" style="display: none;">
+    <div class="image-modal" id="imageModal">
         <span class="image-modal-close">&times;</span>
         <img id="modalImage" src="" alt="查看图片">
     </div>
@@ -900,6 +958,7 @@
                 document.body.style.backgroundImage = `url(${settings.background})`;
                 document.body.style.backgroundSize = 'cover';
                 document.body.style.backgroundAttachment = 'fixed';
+                document.body.style.backgroundPosition = 'center';
             }
         });
         
@@ -1060,15 +1119,22 @@
             // 生成发帖编号
             const now = new Date();
             const dateStr = now.toISOString().slice(0, 10).replace(/-/g, '');
-            const postCount = posts.filter(p => p.postId.startsWith(dateStr)).length + 1;
+            
+            // 获取当天发布的帖子数量
+            const todayPosts = posts.filter(p => {
+                const postDateStr = p.postId ? p.postId.substring(0, 8) : '';
+                return postDateStr === dateStr;
+            });
+            
+            const postCount = todayPosts.length + 1;
             const postId = `${dateStr}${postCount.toString().padStart(3, '0')}`;
             
             // 生成发布日期
             const publishDate = `${now.getFullYear()}年${now.getMonth()+1}月${now.getDate()}日 ${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}`;
             
-            // 创建表单
+            // 创建表单HTML
             const formHtml = `
-                <div class="modal-overlay" id="postModal" style="display: flex;">
+                <div class="modal-overlay" id="postModal" style="display: flex; z-index: 1001;">
                     <div class="modal">
                         <h3>发布帖子</h3>
                         <form id="postForm">
@@ -1113,7 +1179,7 @@
                                     </div>
                                 </div>
                                 <div id="tradeTypeOtherContainer" style="display: none; margin-top: 10px;">
-                                    <input type="text" id="tradeTypeOther" placeholder="请输入其他交易类型">
+                                    <input type="text" id="tradeTypeOther" placeholder="请输入其他交易类型" class="other-input">
                                 </div>
                             </div>
                             <div class="form-group">
@@ -1145,7 +1211,7 @@
                                     </div>
                                 </div>
                                 <div id="targetOtherContainer" style="display: none; margin-top: 10px;">
-                                    <input type="text" id="targetOther" placeholder="请输入其他定向人群">
+                                    <input type="text" id="targetOther" placeholder="请输入其他定向人群" class="other-input">
                                 </div>
                             </div>
                             <div class="form-group">
@@ -1165,7 +1231,7 @@
                                     </div>
                                 </div>
                                 <div id="methodOtherContainer" style="display: none; margin-top: 10px;">
-                                    <input type="text" id="methodOther" placeholder="请输入其他交易方式">
+                                    <input type="text" id="methodOther" placeholder="请输入其他交易方式" class="other-input">
                                 </div>
                             </div>
                             <div class="form-group">
@@ -1176,9 +1242,9 @@
                                 <label for="requirements">要求:</label>
                                 <textarea id="requirements" required></textarea>
                             </div>
-                            <div class="form-group">
+                            <div class="form-actions">
                                 <button type="submit" class="btn">提交</button>
-                                <button type="button" class="btn btn-secondary" id="cancelPostForm">取消</button>
+                                <button type="button" class="btn btn-secondary" id="cancelPostFormBtn">取消</button>
                             </div>
                         </form>
                     </div>
@@ -1203,7 +1269,7 @@
                 document.getElementById('methodOtherContainer').style.display = this.checked ? 'block' : 'none';
             });
             
-            document.getElementById('cancelPostForm').addEventListener('click', function() {
+            document.getElementById('cancelPostFormBtn').addEventListener('click', function() {
                 document.getElementById('postModal').remove();
             });
             
@@ -1216,6 +1282,7 @@
                     if (cb.value === '其他') {
                         const otherValue = document.getElementById('tradeTypeOther').value;
                         if (otherValue) tradeTypes.push(`其他: ${otherValue}`);
+                        else tradeTypes.push('其他');
                     } else {
                         tradeTypes.push(cb.value);
                     }
@@ -1227,6 +1294,7 @@
                     if (cb.value === '其他') {
                         const otherValue = document.getElementById('targetOther').value;
                         if (otherValue) targets.push(`其他: ${otherValue}`);
+                        else targets.push('其他');
                     } else {
                         targets.push(cb.value);
                     }
@@ -1309,10 +1377,10 @@
             }
             
             const filtered = posts.filter(post => 
-                post.postId.toLowerCase().includes(searchTerm) ||
-                post.nickname.toLowerCase().includes(searchTerm) ||
-                post.title.toLowerCase().includes(searchTerm) ||
-                post.phone.includes(searchTerm)
+                (post.postId && post.postId.toLowerCase().includes(searchTerm)) ||
+                (post.nickname && post.nickname.toLowerCase().includes(searchTerm)) ||
+                (post.title && post.title.toLowerCase().includes(searchTerm)) ||
+                (post.phone && post.phone.includes(searchTerm))
             );
             
             updatePostTable(filtered);
@@ -1343,15 +1411,22 @@
             // 生成发帖编号
             const now = new Date();
             const dateStr = now.toISOString().slice(0, 10).replace(/-/g, '');
-            const replyCount = replies.filter(r => r.replyId.startsWith(dateStr)).length + 1;
+            
+            // 获取当天发布的回复数量
+            const todayReplies = replies.filter(r => {
+                const replyDateStr = r.replyId ? r.replyId.substring(0, 8) : '';
+                return replyDateStr === dateStr;
+            });
+            
+            const replyCount = todayReplies.length + 1;
             const replyId = `${dateStr}${replyCount.toString().padStart(3, '0')}`;
             
             // 生成回帖日期
             const replyDate = `${now.getFullYear()}年${now.getMonth()+1}月${now.getDate()}日 ${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}`;
             
-            // 创建表单
+            // 创建表单HTML
             const formHtml = `
-                <div class="modal-overlay" id="replyModal" style="display: flex;">
+                <div class="modal-overlay" id="replyModal" style="display: flex; z-index: 1001;">
                     <div class="modal">
                         <h3>回复帖子</h3>
                         <form id="replyForm">
@@ -1396,7 +1471,7 @@
                                     </div>
                                 </div>
                                 <div id="replyTradeTypeOtherContainer" style="display: none; margin-top: 10px;">
-                                    <input type="text" id="replyTradeTypeOther" placeholder="请输入其他交易类型">
+                                    <input type="text" id="replyTradeTypeOther" placeholder="请输入其他交易类型" class="other-input">
                                 </div>
                             </div>
                             <div class="form-group">
@@ -1428,7 +1503,7 @@
                                     </div>
                                 </div>
                                 <div id="replyTargetOtherContainer" style="display: none; margin-top: 10px;">
-                                    <input type="text" id="replyTargetOther" placeholder="请输入其他定向人群">
+                                    <input type="text" id="replyTargetOther" placeholder="请输入其他定向人群" class="other-input">
                                 </div>
                             </div>
                             <div class="form-group">
@@ -1448,7 +1523,7 @@
                                     </div>
                                 </div>
                                 <div id="replyMethodOtherContainer" style="display: none; margin-top: 10px;">
-                                    <input type="text" id="replyMethodOther" placeholder="请输入其他交易方式">
+                                    <input type="text" id="replyMethodOther" placeholder="请输入其他交易方式" class="other-input">
                                 </div>
                             </div>
                             <div class="form-group">
@@ -1468,16 +1543,16 @@
                                     </div>
                                 </div>
                                 <div id="replyPriceOtherContainer" style="display: none; margin-top: 10px;">
-                                    <input type="text" id="replyPriceOther" placeholder="请输入其他价格">
+                                    <input type="text" id="replyPriceOther" placeholder="请输入其他价格" class="other-input">
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label for="notes">备注:</label>
                                 <textarea id="notes" required></textarea>
                             </div>
-                            <div class="form-group">
+                            <div class="form-actions">
                                 <button type="submit" class="btn">提交</button>
-                                <button type="button" class="btn btn-secondary" id="cancelReplyForm">取消</button>
+                                <button type="button" class="btn btn-secondary" id="cancelReplyFormBtn">取消</button>
                             </div>
                         </form>
                     </div>
@@ -1506,7 +1581,7 @@
                 document.getElementById('replyPriceOtherContainer').style.display = this.checked ? 'block' : 'none';
             });
             
-            document.getElementById('cancelReplyForm').addEventListener('click', function() {
+            document.getElementById('cancelReplyFormBtn').addEventListener('click', function() {
                 document.getElementById('replyModal').remove();
             });
             
@@ -1519,6 +1594,7 @@
                     if (cb.value === '其他') {
                         const otherValue = document.getElementById('replyTradeTypeOther').value;
                         if (otherValue) tradeTypes.push(`其他: ${otherValue}`);
+                        else tradeTypes.push('其他');
                     } else {
                         tradeTypes.push(cb.value);
                     }
@@ -1530,6 +1606,7 @@
                     if (cb.value === '其他') {
                         const otherValue = document.getElementById('replyTargetOther').value;
                         if (otherValue) targets.push(`其他: ${otherValue}`);
+                        else targets.push('其他');
                     } else {
                         targets.push(cb.value);
                     }
@@ -1619,10 +1696,10 @@
             }
             
             const filtered = replies.filter(reply => 
-                reply.originalPostId.toLowerCase().includes(searchTerm) ||
-                reply.replyId.toLowerCase().includes(searchTerm) ||
-                reply.nickname.toLowerCase().includes(searchTerm) ||
-                reply.phone.includes(searchTerm)
+                (reply.originalPostId && reply.originalPostId.toLowerCase().includes(searchTerm)) ||
+                (reply.replyId && reply.replyId.toLowerCase().includes(searchTerm)) ||
+                (reply.nickname && reply.nickname.toLowerCase().includes(searchTerm)) ||
+                (reply.phone && reply.phone.includes(searchTerm))
             );
             
             updateReplyTable(filtered);
@@ -1657,16 +1734,19 @@
             
             uploadArea.addEventListener('dragover', (e) => {
                 e.preventDefault();
-                uploadArea.style.borderColor = '#4a90e2';
+                uploadArea.style.borderColor = '#4263eb';
+                uploadArea.style.backgroundColor = '#f8f9fa';
             });
             
             uploadArea.addEventListener('dragleave', () => {
-                uploadArea.style.borderColor = '#ccc';
+                uploadArea.style.borderColor = '#adb5bd';
+                uploadArea.style.backgroundColor = '';
             });
             
             uploadArea.addEventListener('drop', (e) => {
                 e.preventDefault();
-                uploadArea.style.borderColor = '#ccc';
+                uploadArea.style.borderColor = '#adb5bd';
+                uploadArea.style.backgroundColor = '';
                 if (e.dataTransfer.files.length) {
                     handler(e.dataTransfer.files[0]);
                 }
@@ -1711,6 +1791,7 @@
                 document.body.style.backgroundImage = `url(${settings.background})`;
                 document.body.style.backgroundSize = 'cover';
                 document.body.style.backgroundAttachment = 'fixed';
+                document.body.style.backgroundPosition = 'center';
                 showMessage('背景图片上传成功', 'success');
             };
             reader.readAsDataURL(file);
@@ -1742,7 +1823,7 @@
                 document.getElementById('siteLogo').innerHTML = `<img src="${settings.logo}" alt="网站LOGO">`;
             } else {
                 logoPreview.innerHTML = '<div class="empty-data">未上传LOGO</div>';
-                document.getElementById('siteLogo').innerHTML = '<div class="logo-placeholder">LOGO</div>';
+                document.getElementById('siteLogo').innerHTML = '<div class="logo-placeholder">LOGO<br>75×75</div>';
             }
             
             // 背景预览
