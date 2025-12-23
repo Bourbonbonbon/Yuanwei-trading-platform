@@ -618,20 +618,17 @@
                         </div>
                         
                         <div class="form-group">
-                                <label class="form-label">属性</label>
-                                <select class="form-control" name="smAttribute" required>
-                                    <option value="">请选择</option>
-                                    <option value="1">1</option>
-                                    <option value="0">0</option>
-                                    <option value="猴">猴</option>
-                                    <option value="熊">熊</option>
-                                    <option value="checkbox-item">
-                                    <input type="checkbox" name="preference" value="其他"> 其他
-                                </label>
-                            </div>
-                            <input type="text" class="form-control" id="otherPreference" placeholder="请输入其他属性" style="margin-top: 10px; display: none;">
-                        </div>
-                                </select>
+                            <label class="form-label">属性</label>
+                            <select class="form-control" name="smAttribute" required>
+                                <option value="">请选择</option>
+                                <option value="1">1</option>
+                                <option value="0">0</option>
+                                <option value="猴">猴</option>
+                                <option value="熊">熊</option>
+                                <option value="other">其他</option>
+                            </select>
+                            <div id="otherPreferenceContainer" style="margin-top: 10px; display: none;">
+                                <input type="text" class="form-control" id="otherPreference" placeholder="请输入其他属性">
                             </div>
                         </div>
         
@@ -643,13 +640,10 @@
                                     <option value="警">警</option>
                                     <option value="消">消</option>
                                     <option value="大叔">大叔</option>
-                                    <option value="checkbox-item">
-                                    <input type="checkbox" name="preference" value="其他"> 其他
-                                </label>
-                            </div>
-                            <input type="text" class="form-control" id="otherPreference" placeholder="请输入其他属性" style="margin-top: 10px; display: none;">
-                        </div>
+                                   <option value="other">其他</option>
                                 </select>
+                            <div id="otherPreferenceContainer" style="margin-top: 10px; display: none;">
+                                <input type="text" class="form-control" id="otherPreference" placeholder="请输入其他身份属性">
                             </div>
                         </div>
                         
@@ -683,13 +677,10 @@
                                     <option value="原味">原味</option>
                                     <option value="圣水">圣水</option>
                                     <option value="捆绑">捆绑</option>
-                                    <option value="checkbox-item">
-                                    <input type="checkbox" name="preference" value="其他"> 其他
-                                </label>
-                            </div>
-                            <input type="text" class="form-control" id="otherPreference" placeholder="请输入其他属性" style="margin-top: 10px; display: none;">
-                        </div>
+                                   <option value="other">其他</option>
                                 </select>
+                            <div id="otherPreferenceContainer" style="margin-top: 10px; display: none;">
+                                <input type="text" class="form-control" id="otherPreference" placeholder="请输入其他特殊喜好">
                             </div>
                         </div>
                         
