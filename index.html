@@ -617,48 +617,40 @@
                             </div>
                         </div>
                         
-                        <div class="form-row">
-                            <div class="form-group">
+                        <div class="form-group">
                                 <label class="form-label">属性</label>
-                                <div class="radio-group">
-                                    <label class="radio-item">
-                                        <input type="radio" name="attribute" value="1" required> 1
-                                    </label>
-                                    <label class="radio-item">
-                                        <input type="radio" name="attribute" value="0" required> 0
-                                    </label>
-                                    <label class="radio-item">
-                                        <input type="radio" name="attribute" value="猴" required> 猴
-                                    </label>
-                                    <label class="radio-item">
-                                        <input type="radio" name="attribute" value="熊" required> 熊
-                                    </label>
-                                </div>
-                            </div>
-                            
-                            <div class="form-group">
-                            <label class="form-label">身份属性</label>
-                            <div class="checkbox-group">
-                                <label class="checkbox-item">
-                                    <input type="checkbox" name="preference" value="军"> 军
-                                </label>
-                                <label class="checkbox-item">
-                                    <input type="checkbox" name="preference" value="警"> 警
-                                </label>
-                                <label class="checkbox-item">
-                                    <input type="checkbox" name="preference" value="消"> 消
-                                </label>
-                                <label class="checkbox-item">
-                                    <input type="checkbox" name="preference" value="大叔"> 大叔
-                                </label>
-                                <label class="checkbox-item">
-                                    <input type="checkbox" name="preference" value="民工"> 民工
-                                </label>
-                                <label class="checkbox-item">
+                                <select class="form-control" name="smAttribute" required>
+                                    <option value="">请选择</option>
+                                    <option value="1">1</option>
+                                    <option value="0">0</option>
+                                    <option value="猴">猴</option>
+                                    <option value="熊">熊</option>
+                                    <option value="checkbox-item">
                                     <input type="checkbox" name="preference" value="其他"> 其他
                                 </label>
                             </div>
-                            <input type="text" class="form-control" id="otherPreference" placeholder="请输入其他身份属性" style="margin-top: 10px; display: none;">
+                            <input type="text" class="form-control" id="otherPreference" placeholder="请输入其他属性" style="margin-top: 10px; display: none;">
+                        </div>
+                                </select>
+                            </div>
+                        </div>
+        
+                        <div class="form-group">
+                                <label class="form-label">身份属性</label>
+                                <select class="form-control" name="smAttribute" required>
+                                    <option value="">请选择</option>
+                                    <option value="军">军</option>
+                                    <option value="警">警</option>
+                                    <option value="消">消</option>
+                                    <option value="大叔">大叔</option>
+                                    <option value="checkbox-item">
+                                    <input type="checkbox" name="preference" value="其他"> 其他
+                                </label>
+                            </div>
+                            <input type="text" class="form-control" id="otherPreference" placeholder="请输入其他属性" style="margin-top: 10px; display: none;">
+                        </div>
+                                </select>
+                            </div>
                         </div>
                         
                             <div class="form-group">
@@ -683,24 +675,22 @@
                                 <input type="number" class="form-control" name="penisGirth" min="1" max="20" step="0.1" required>
                             </div>
                         </div>
-                        
+
                         <div class="form-group">
-                            <label class="form-label">特殊喜好</label>
-                            <div class="checkbox-group">
-                                <label class="checkbox-item">
-                                    <input type="checkbox" name="preference" value="原味"> 原味
-                                </label>
-                                <label class="checkbox-item">
-                                    <input type="checkbox" name="preference" value="圣水"> 圣水
-                                </label>
-                                <label class="checkbox-item">
-                                    <input type="checkbox" name="preference" value="捆绑"> 捆绑
-                                </label>
-                                <label class="checkbox-item">
+                                <label class="form-label">特殊喜好</label>
+                                <select class="form-control" name="smAttribute" required>
+                                    <option value="">请选择</option>
+                                    <option value="原味">原味</option>
+                                    <option value="圣水">圣水</option>
+                                    <option value="捆绑">捆绑</option>
+                                    <option value="checkbox-item">
                                     <input type="checkbox" name="preference" value="其他"> 其他
                                 </label>
                             </div>
-                            <input type="text" class="form-control" id="otherPreference" placeholder="请输入其他特殊喜好" style="margin-top: 10px; display: none;">
+                            <input type="text" class="form-control" id="otherPreference" placeholder="请输入其他属性" style="margin-top: 10px; display: none;">
+                        </div>
+                                </select>
+                            </div>
                         </div>
                         
                         <div class="form-buttons">
