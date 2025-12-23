@@ -577,121 +577,120 @@
             </div>
             
             <!-- 账号注册弹窗 -->
-            <div id="accountModal" class="modal">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h3>账号注册</h3>
-                        <button class="close-modal" data-modal="accountModal">&times;</button>
-                    </div>
-                    <form id="accountForm">
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label class="form-label">昵称</label>
-                                <input type="text" class="form-control" name="nickname" required>
-                            </div>
-                            <div class="form-group">
-                                <label class="form-label">名称</label>
-                                <input type="text" class="form-control" name="name" required>
-                            </div>
-                        </div>
-                        
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label class="form-label">手机尾号</label>
-                                <input type="text" class="form-control" name="phone" maxlength="4" required>
-                            </div>
-                            <div class="form-group">
-                                <label class="form-label">年龄</label>
-                                <input type="number" class="form-control" name="age" min="18" max="100" required>
-                            </div>
-                        </div>
-                        
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label class="form-label">身高 (厘米)</label>
-                                <input type="number" class="form-control" name="height" min="100" max="250" required>
-                            </div>
-                            <div class="form-group">
-                                <label class="form-label">体重 (公斤)</label>
-                                <input type="number" class="form-control" name="weight" min="30" max="200" step="0.1" required>
-                            </div>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label class="form-label">属性</label>
-                            <select class="form-control" name="smAttribute" required>
-                                <option value="">请选择</option>
-                                <option value="1">1</option>
-                                <option value="0">0</option>
-                                <option value="猴">猴</option>
-                                <option value="熊">熊</option>
-                                <option value="other">其他</option>
-                            </select>
-                            <div id="otherPreferenceContainer" style="margin-top: 10px; display: none;">
-                                <input type="text" class="form-control" id="otherPreference" placeholder="请输入其他属性">
-                            </div>
-                        </div>
-        
-                        <div class="form-group">
-                                <label class="form-label">身份属性</label>
-                                <select class="form-control" name="smAttribute" required>
-                                    <option value="">请选择</option>
-                                    <option value="军">军</option>
-                                    <option value="警">警</option>
-                                    <option value="消">消</option>
-                                    <option value="大叔">大叔</option>
-                                   <option value="other">其他</option>
-                                </select>
-                            <div id="otherPreferenceContainer" style="margin-top: 10px; display: none;">
-                                <input type="text" class="form-control" id="otherPreference" placeholder="请输入其他身份属性">
-                            </div>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label class="form-label">SM属性</label>
-                            <select class="form-control" name="smAttribute" required>
-                                <option value="">请选择</option>
-                                <option value="S">S</option>
-                                <option value="M">M</option>
-                                <option value="Sub">Sub</option>
-                                <option value="Dom">Dom</option>
-                            </select>
-                        </div>
+<div id="accountModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3>账号注册</h3>
+            <button class="close-modal" data-modal="accountModal">&times;</button>
+        </div>
+        <form id="accountForm">
+            <div class="form-row">
+                <div class="form-group">
+                    <label class="form-label">昵称</label>
+                    <input type="text" class="form-control" name="nickname" required>
                 </div>
-                
-                <div class="form-row">
-                    <div class="form-group">
-                        <label class="form-label">屌长 (厘米)</label>
-                        <input type="number" class="form-control" name="penisLength" min="1" max="30" step="0.1" required>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label class="form-label">屌粗 (厘米)</label>
-                        <input type="number" class="form-control" name="penisGirth" min="1" max="20" step="0.1" required>
-                    </div>
+                <div class="form-group">
+                    <label class="form-label">名称</label>
+                    <input type="text" class="form-control" name="name" required>
+                </div>
+            </div>
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label class="form-label">手机尾号</label>
+                    <input type="text" class="form-control" name="phone" maxlength="4" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">年龄</label>
+                    <input type="number" class="form-control" name="age" min="18" max="100" required>
+                </div>
+            </div>
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label class="form-label">身高 (厘米)</label>
+                    <input type="number" class="form-control" name="height" min="100" max="250" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">体重 (公斤)</label>
+                    <input type="number" class="form-control" name="weight" min="30" max="200" step="0.1" required>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label">属性</label>
+                <select class="form-control" name="attribute" required>
+                    <option value="">请选择</option>
+                    <option value="1">1</option>
+                    <option value="0">0</option>
+                    <option value="猴">猴</option>
+                    <option value="熊">熊</option>
+                    <option value="other">其他</option>
+                </select>
+                <div id="otherAttributeContainer" style="margin-top: 10px; display: none;">
+                    <input type="text" class="form-control" id="otherAttribute" placeholder="请输入其他属性">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">身份属性</label>
+                <select class="form-control" name="identityAttribute" required>
+                    <option value="">请选择</option>
+                    <option value="军">军</option>
+                    <option value="警">警</option>
+                    <option value="消">消</option>
+                    <option value="大叔">大叔</option>
+                    <option value="other">其他</option>
+                </select>
+                <div id="otherIdentityContainer" style="margin-top: 10px; display: none;">
+                    <input type="text" class="form-control" id="otherIdentity" placeholder="请输入其他身份属性">
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label">SM属性</label>
+                <select class="form-control" name="smAttribute" required>
+                    <option value="">请选择</option>
+                    <option value="S">S</option>
+                    <option value="M">M</option>
+                    <option value="Sub">Sub</option>
+                    <option value="Dom">Dom</option>
+                </select>
+            </div>
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label class="form-label">屌长 (厘米)</label>
+                    <input type="number" class="form-control" name="penisLength" min="1" max="30" step="0.1" required>
                 </div>
                 
                 <div class="form-group">
-                    <label class="form-label">特殊喜好</label>
-                    <select class="form-control" name="smAttribute" required>
-                        <option value="">请选择</option>
-                        <option value="原味">原味</option>
-                        <option value="圣水">圣水</option>
-                        <option value="捆绑">捆绑</option>
-                        <option value="other">其他</option>
-                    </select>
-                    <div id="otherPreferenceContainer" style="margin-top: 10px; display: none;">
-                        <input type="text" class="form-control" id="otherPreference" placeholder="请输入其他特殊喜好">
-                    </div>
+                    <label class="form-label">屌粗 (厘米)</label>
+                    <input type="number" class="form-control" name="penisGirth" min="1" max="20" step="0.1" required>
                 </div>
-                
-                <div class="form-buttons">
-                    <button type="button" class="btn btn-cancel" data-modal="accountModal">取消</button>
-                    <button type="submit" class="btn btn-submit">提交注册</button>
-                </div>
-            </form>
             </div>
-        </div>
+            
+            <div class="form-group">
+                <label class="form-label">特殊喜好</label>
+                <select class="form-control" name="specialPreference" required>
+                    <option value="">请选择</option>
+                    <option value="原味">原味</option>
+                    <option value="圣水">圣水</option>
+                    <option value="捆绑">捆绑</option>
+                    <option value="other">其他</option>
+                </select>
+                <div id="otherPreferenceContainer" style="margin-top: 10px; display: none;">
+                    <input type="text" class="form-control" id="otherPreference" placeholder="请输入其他特殊喜好">
+                </div>
+            </div>
+            
+            <div class="form-buttons">
+                <button type="button" class="btn btn-cancel" data-modal="accountModal">取消</button>
+                <button type="submit" class="btn btn-submit">提交注册</button>
+            </div>
+        </form>
+    </div>
+</div>
             
             <!-- 密码提示弹窗 -->
             <div id="passwordModal" class="modal">
